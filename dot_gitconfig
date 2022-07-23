@@ -1,0 +1,5 @@
+[credential]
+	helper = wincred
+[user]
+	name = Alex Libman
+	email = alexlibman97@gmail.com
