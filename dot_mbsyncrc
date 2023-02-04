@@ -1,0 +1,20 @@
+IMAPStore gmail-remote
+Host imap.gmail.com
+SSLType IMAPS
+AuthMechs LOGIN
+User alexlibman97@gmail.com
+PassCmd "pass email/alexlibman97@gmail.com"
+
+MaildirStore gmail-local
+Path ~/Mail/gmail/
+Inbox ~/Mail/gmail/INBOX
+Subfolders Verbatim
+
+Channel gmail
+Far :gmail-remote:
+Near :gmail-local:
+Sync Pull New Flags
+Create Near
+Expunge None
+Patterns * !"[Gmail]/All Mail" !"[Gmail]/Important" !"[Gmail]/Starred" !"[Gmail]/Bin"
+SyncState *
