@@ -1,0 +1,14 @@
+# File for custom personal keybindings
+
+# Function for inserting output of ff (fuzzy find) call into current output
+
+ff-widget() {
+  local selected="$(ff)"
+  READLINE_LINE="${READLINE_LINE:0:$READLINE_POINT}$selected${READLINE_LINE:$READLINE_POINT}"
+  READLINE_POINT=$(( READLINE_POINT + ${#selected} ))
+}
+
+# CTRL-F - Paste the selected file name for content search into the command line
+bind -m emacs-standard -x '"\C-f": ff-widget'
+bind -m vi-command -x '"\C-f": ff-widget'
+bind -m vi-insert -x '"\C-f": ff-widget'

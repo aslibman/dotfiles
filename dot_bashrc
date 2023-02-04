@@ -120,6 +120,11 @@ if [ -x "$(command -v fzf)" ]; then
   source /usr/share/doc/fzf/examples/key-bindings.bash
 fi
 
+# Enable custom personal key-bindings
+if [ -f ~/.key_bindings ]; then
+    source ~/.key_bindings
+fi
+
 # Set custom colors for ls dirs
 eval "`dircolors -b ~/.dircolors`"
 # LS_COLORS=$LS_COLORS:'di=0;31:ln=1;31:'; export LS_COLORS

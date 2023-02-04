@@ -21,12 +21,7 @@ __fzf_contentsearch__() {
       --bind "change:reload:$RG_DEFAULT_COMMAND {q} || true" \
       --preview "rg -i --pretty --context 2 {q} {}" | cut -d":" -f1,2
   ) || return
-  READLINE_LINE=${output#*$'\t'}
-  if [[ -z "$READLINE_POINT" ]]; then
-    echo "$READLINE_LINE"
-  else
-    READLINE_POINT=0x7fffffff
-  fi
+  echo $output
 }
 
 __fzf_contentsearch__
