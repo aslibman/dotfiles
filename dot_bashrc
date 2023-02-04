@@ -153,3 +153,11 @@ export HISTFILE=~/.bash_eternal_history
 # Force prompt to write history after every command.
 # http://superuser.com/questions/20900/bash-history-loss
 PROMPT_COMMAND="history -a; $PROMPT_COMMAND"
+
+# Set default editor to vim
+export EDITOR=vim
+
+# Enable syntax highlighting in less
+# Requires installation of GNU highlight packages: see https://superuser.com/a/71593
+export LESSOPEN="| /usr/bin/src-hilite-lesspipe.sh %s"
+export LESS=' -R '
