@@ -164,5 +164,5 @@ export EDITOR=vim
 
 # Enable syntax highlighting in less
 # Requires installation of GNU highlight packages: see https://superuser.com/a/71593
-export LESSOPEN="| /usr/bin/src-hilite-lesspipe.sh %s"
+export LESSOPEN="| /usr/share/source-highlight/src-hilite-lesspipe.sh %s"
 export LESS=' -R '
