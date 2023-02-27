@@ -8,8 +8,10 @@
 
   # Packages that should be installed to the user profile.
   home.packages = with pkgs; [
-    tmux
+    bat
+    fzf
     tldr
+    tmux
   ];
 
   # This value determines the Home Manager release that your

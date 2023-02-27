@@ -116,8 +116,9 @@ if ! shopt -oq posix; then
 fi
 
 # Enable fzf key-bindings
-if [ -x "$(command -v fzf)" ]; then
-  source /usr/share/doc/fzf/examples/key-bindings.bash
+if command -v fzf-share >/dev/null; then
+  source "$(fzf-share)/key-bindings.bash"
+  source "$(fzf-share)/completion.bash"
 fi
 
 # Enable custom personal key-bindings
