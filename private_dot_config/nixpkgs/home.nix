@@ -9,6 +9,7 @@
   # Packages that should be installed to the user profile.
   home.packages = with pkgs; [
     bat
+    ffmpeg_5-full
     fzf
     tldr
     tmux
