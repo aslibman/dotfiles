@@ -12,6 +12,7 @@
     ffmpeg_5-full
     fzf
     shellcheck
+    sourceHighlight
     tldr
     tmux
   ];
