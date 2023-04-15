@@ -11,6 +11,7 @@
     bat
     ffmpeg_5-full
     fzf
+    shellcheck
     tldr
     tmux
   ];
