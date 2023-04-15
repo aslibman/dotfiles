@@ -175,3 +175,11 @@ export LESS=' -R '
 
 # Fix WSL2 CUDA: https://github.com/microsoft/WSL/issues/8587#issuecomment-1229170859
 export LD_LIBRARY_PATH=/usr/lib/wsl/lib:$LD_LIBRARY_PATH
+
+# Open new tabs in same dir on windows terminal: https://learn.microsoft.com/en-us/windows/terminal/tutorials/new-tab-same-directory#bash
+# Edited to deal with dangling semi-colon in original PROMPT_COMMAND
+if [[ -z $PROMPT_COMMAND && $PROMPT_COMMAND != *\;\  ]]; then
+    PROMPT_COMMAND="$PROMPT_COMMAND; "
+fi
+PROMPT_COMMAND=$PROMPT_COMMAND'printf "\e]9;9;%s\e\\" "$(wslpath -w "$PWD")"'
+
