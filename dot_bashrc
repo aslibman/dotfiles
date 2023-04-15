@@ -184,3 +184,9 @@ if [[ -z $PROMPT_COMMAND && $PROMPT_COMMAND != *\;\  ]]; then
 fi
 PROMPT_COMMAND=$PROMPT_COMMAND'printf "\e]9;9;%s\e\\" "$(wslpath -w "$PWD")"'
 
+# Source completions from Nix installed packages
+# https://github.com/nix-community/home-manager/issues/1871#issuecomment-852739277
+for completion_script in ~/.nix-profile/share/bash-completion/completions/*
+do
+  source "${completion_script}"
+done
