@@ -172,3 +172,6 @@ export EDITOR=vim
 # Requires installation of GNU highlight packages: see https://superuser.com/a/71593
 export LESSOPEN="| /usr/share/source-highlight/src-hilite-lesspipe.sh %s"
 export LESS=' -R '
+
+# Fix WSL2 CUDA: https://github.com/microsoft/WSL/issues/8587#issuecomment-1229170859
+export LD_LIBRARY_PATH=/usr/lib/wsl/lib:$LD_LIBRARY_PATH
