@@ -1,1 +1,9 @@
+# Always output colors for e.g. less
 alias shellcheck="shellcheck --color"
+
+# Create help prettyprinter command
+# https://github.com/sharkdp/bat#highlighting---help-messages
+alias bathelp='bat --plain --language=help'
+help() {
+    "$@" --help 2>&1 | bathelp
+}
