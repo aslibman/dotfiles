@@ -1,10 +1,21 @@
 [credential]
-	helper = wincred
+    helper = wincred
 [user]
-	name = Alex Libman
-	email = 5430928+aslibman@users.noreply.github.com
+    name = Alex Libman
+    email = 5430928+aslibman@users.noreply.github.com
 [filter "lfs"]
-	clean = git-lfs clean -- %f
-	smudge = git-lfs smudge -- %f
-	process = git-lfs filter-process
-	required = true
+    clean = git-lfs clean -- %f
+    smudge = git-lfs smudge -- %f
+    process = git-lfs filter-process
+    required = true
+
+# Set core pager to bat
+[core]
+    pager = bat -n --style=changes
+
+# Does not have decorations or color due to clash with bat
+# See https://github.com/sharkdp/bat/discussions/2329
+[log]
+    decorate = no
+[diff]
+    color = never
