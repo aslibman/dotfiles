@@ -11,6 +11,8 @@
     bat
     ffmpeg_5-full
     fzf
+    gcc
+    neovim
     shellcheck
     sourceHighlight
     tldr
