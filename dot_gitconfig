@@ -1,3 +1,6 @@
+# Helpful reference:
+# https://jvns.ca/blog/2024/02/16/popular-git-config-options/#pull-ff-only-or-pull-rebase-true
+
 [credential]
     helper = wincred
 [user]
@@ -19,3 +22,13 @@
     decorate = no
 [diff]
     color = never
+
+# Set diff algorithm to histogram, which better handlers reordering better
+# https://luppeng.wordpress.com/2020/10/10/when-to-use-each-of-the-git-diff-algorithms/
+[diff]
+    algorithm = histogram
+
+# zdiff3 includes context about previous code when resolving merge conflicts
+# https://ductile.systems/zdiff3/
+[merge]
+    conflictstyle = zdiff3
