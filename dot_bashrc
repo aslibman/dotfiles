@@ -178,7 +178,9 @@ export LESSOPEN="| ~/bin/src-hilite-lesspipe.sh %s"
 export LESS=' -R '
 
 # Use bat for man pages - https://github.com/sharkdp/bat#man
-export MANPAGER="sh -c 'col -bx | bat -l man -p'"
+# export MANPAGER="sh -c 'col -bx | bat -l man -p'"
+# Use batman instead which strips out sed colors
+eval "$(batman --export-env)"
 
 # Fix WSL2 CUDA: https://github.com/microsoft/WSL/issues/8587#issuecomment-1229170859
 export LD_LIBRARY_PATH=/usr/lib/wsl/lib:$LD_LIBRARY_PATH

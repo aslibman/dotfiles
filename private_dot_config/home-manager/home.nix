@@ -9,11 +9,14 @@
   # Packages that should be installed to the user profile.
   home.packages = with pkgs; [
     bat
+    bat-extras.batgrep
+    bat-extras.batman
     du-dust
     eza
     ffmpeg_6
     fzf
     gcc
+    git
     graphviz
     neovim
     shellcheck

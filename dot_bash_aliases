@@ -10,3 +10,6 @@ help() {
 
 # Use nvim instead of vim
 alias vim=nvim
+
+# Use eza instead of ls
+alias ls=eza
