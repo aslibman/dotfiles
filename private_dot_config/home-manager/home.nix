@@ -9,14 +9,18 @@
   # Packages that should be installed to the user profile.
   home.packages = with pkgs; [
     bat
-    ffmpeg_5-full
+    du-dust
+    eza
+    ffmpeg_6
     fzf
     gcc
+    graphviz
     neovim
     shellcheck
     sourceHighlight
     tldr
     tmux
+    unzip
   ];
 
   # This value determines the Home Manager release that your
