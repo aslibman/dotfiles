@@ -1,15 +1,20 @@
+" File format settings
 set ff=unix
 set number
+
+" Indentation settings
 set autoindent
 set tabstop=4
 set shiftwidth=4
 set smarttab
 set expandtab
 set softtabstop=4
+filetype indent on
+
+" Miscellaneous settings
 set mouse=a
 set showmatch
 set is
-filetype indent on
 
 " Auto install vim-plug
 " https://github.com/junegunn/vim-plug/wiki/tips#automatic-installation
@@ -26,7 +31,7 @@ Plug 'vim-airline/vim-airline' " Status bar
 Plug 'ryanoasis/vim-devicons' " Developer Icons
 Plug 'dracula/vim', {'as': 'dracula'} " Dracula theme
 Plug 'tpope/vim-commentary' " Easy commenting
-Plug 'nvim-treesitter/nvim-treesitter' " Treesitter
+Plug 'nvim-treesitter/nvim-treesitter', {'do': ':TSUpdate'} " Treesitter
 
 call plug#end()
 
