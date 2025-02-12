@@ -1,6 +1,7 @@
 " File format settings
 set ff=unix
 set number
+set relativenumber
 
 " Indentation settings
 set autoindent
@@ -14,7 +15,9 @@ filetype indent on
 " Miscellaneous settings
 set mouse=a
 set showmatch
-set is
+set incsearch
+set hlsearch
+set scrolloff=6
 
 " Auto install vim-plug
 " https://github.com/junegunn/vim-plug/wiki/tips#automatic-installation

@@ -24,6 +24,7 @@
     tldr
     tmux
     unzip
+    uv
   ];
 
   # This value determines the Home Manager release that your
