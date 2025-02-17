@@ -8,9 +8,11 @@
 
   # Packages that should be installed to the user profile.
   home.packages = with pkgs; [
+    atuin
     bat
     bat-extras.batgrep
     bat-extras.batman
+    blesh
     du-dust
     eza
     ffmpeg_6

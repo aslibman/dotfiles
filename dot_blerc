@@ -1,0 +1,14 @@
+# Disable auto-complete
+bleopt complete_auto_complete=
+
+# Disable auto-complete based on the command history
+bleopt complete_auto_history=
+
+# Disable ambiguous completion
+bleopt complete_ambiguous=
+
+# Disable menu-complete by TAB
+bleopt complete_menu_complete=
+
+# Disable menu filtering
+bleopt complete_menu_filter=

@@ -24,6 +24,8 @@ shopt -s checkwinsize
 # match all files and zero or more directories and subdirectories.
 #shopt -s globstar
 
+source "$(blesh-share)"/ble.sh --attach=none
+
 # make less more friendly for non-text input files, see lesspipe(1)
 [ -x /usr/bin/lesspipe ] && eval "$(SHELL=/bin/sh lesspipe)"
 
@@ -201,3 +203,9 @@ done
 
 # Add CUDA bin folder to path
 export PATH=/usr/local/cuda/bin:$PATH
+
+# Attach ble.sh
+[[ ! ${BLE_VERSION-} ]] || ble-attach
+
+# Enable atuin
+source ~/bin/atuin_setup.sh
