@@ -26,6 +26,10 @@ shopt -s checkwinsize
 
 source "$(blesh-share)"/ble.sh --attach=none
 
+# Enable starship prompt
+export STARSHIP_CONFIG=~/.config/starship/starship.toml
+eval "$(starship init bash)"
+
 # make less more friendly for non-text input files, see lesspipe(1)
 [ -x /usr/bin/lesspipe ] && eval "$(SHELL=/bin/sh lesspipe)"
 

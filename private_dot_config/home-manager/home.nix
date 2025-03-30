@@ -13,6 +13,7 @@
     bat-extras.batgrep
     bat-extras.batman
     blesh
+    delta
     du-dust
     eza
     ffmpeg_6
@@ -23,6 +24,7 @@
     neovim
     shellcheck
     sourceHighlight
+    starship
     tldr
     tmux
     unzip
