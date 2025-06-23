@@ -35,6 +35,9 @@ Plug 'ryanoasis/vim-devicons' " Developer Icons
 Plug 'dracula/vim', {'as': 'dracula'} " Dracula theme
 Plug 'tpope/vim-commentary' " Easy commenting
 Plug 'nvim-treesitter/nvim-treesitter', {'do': ':TSUpdate'} " Treesitter
+Plug 'MunifTanjim/nui.nvim' " Dependency for hardtime
+Plug 'm4xshen/hardtime.nvim' " Hardtime
+Plug 'rcarriga/nvim-notify' " Nvim Notify
 
 call plug#end()
 
@@ -46,8 +49,12 @@ colorscheme dracula
 " Treesitter config - important to have GCC installed via Nix too
 " https://old.reddit.com/r/Nix/comments/rgcynr/nonnixos_homemanager_treesitternvim_and_tsinstall/hqni4pv/
 lua << EOF
+vim.notify = require("notify")
+
 require'nvim-treesitter.configs'.setup {
     ensure_installed = "all",
     highlight = { enable = true },
 }
+
+require("hardtime").setup({})
 EOF
