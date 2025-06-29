@@ -181,12 +181,12 @@ do
   source "${completion_script}"
 done
 
+# Enable starship prompt
+export STARSHIP_CONFIG=~/.config/starship/starship.toml
+eval "$(starship init bash)"
+
 # Attach ble.sh
 [[ ! ${BLE_VERSION-} ]] || ble-attach
 
 # Enable atuin
 source ~/bin/atuin_setup.sh
-
-# Enable starship prompt
-export STARSHIP_CONFIG=~/.config/starship/starship.toml
-eval "$(starship init bash)"
