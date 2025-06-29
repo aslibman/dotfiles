@@ -24,11 +24,7 @@ shopt -s checkwinsize
 # match all files and zero or more directories and subdirectories.
 #shopt -s globstar
 
-source "$(blesh-share)"/ble.sh --attach=none
-
-# Enable starship prompt
-export STARSHIP_CONFIG=~/.config/starship/starship.toml
-eval "$(starship init bash)"
+[[ $- == *i* ]] && source "$(blesh-share)"/ble.sh --noattach
 
 # make less more friendly for non-text input files, see lesspipe(1)
 [ -x /usr/bin/lesspipe ] && eval "$(SHELL=/bin/sh lesspipe)"
@@ -78,33 +74,26 @@ xterm*|rxvt*)
     ;;
 esac
 
-# enable color support of ls and also add handy aliases
-if [ -x /usr/bin/dircolors ]; then
-    test -r ~/.dircolors && eval "$(dircolors -b ~/.dircolors)" || eval "$(dircolors -b)"
-    alias ls='ls --color=auto'
-    #alias dir='dir --color=auto'
-    #alias vdir='vdir --color=auto'
+# Determine OS and set color support accordingly
+case "$(uname -s)" in
+  Linux) 
+    if [ -x /usr/bin/dircolors ]; then
+        test -r ~/.dircolors && eval "$(dircolors -b ~/.dircolors)" || eval "$(dircolors -b)"
+        alias ls='ls --color=auto'
+    fi
+    ;;
+  Darwin) 
+    # macOS uses BSD ls; use built-in color flags
+    alias ls='ls -G'
+    ;;
+esac
 
-    alias grep='grep --color=auto'
-    alias fgrep='fgrep --color=auto'
-    alias egrep='egrep --color=auto'
-fi
+alias grep='grep --color=auto'
 
 # colored GCC warnings and errors
 #export GCC_COLORS='error=01;31:warning=01;35:note=01;36:caret=01;32:locus=01:quote=01'
 
-# some more ls aliases
-alias ll='ls -alF'
-alias la='ls -A'
-alias l='ls -CF'
-
-# Add an "alert" alias for long running commands.  Use like so:
-#   sleep 10; alert
-alias alert='notify-send --urgency=low -i "$([ $? = 0 ] && echo terminal || echo error)" "$(history|tail -n1|sed -e '\''s/^\s*[0-9]\+\s*//;s/[;&|]\s*alert$//'\'')"'
-
 # Alias definitions.
-# You may want to put all your additions into a separate file like
-# ~/.bash_aliases, instead of adding them here directly.
 # See /usr/share/doc/bash-doc/examples in the bash-doc package.
 
 if [ -f ~/.bash_aliases ]; then
@@ -141,39 +130,20 @@ if [ -f ~/.key_bindings ]; then
     source ~/.key_bindings
 fi
 
-# Set custom colors for ls dirs
-eval "`dircolors -b ~/.dircolors`"
-# LS_COLORS=$LS_COLORS:'di=0;31:ln=1;31:'; export LS_COLORS
-. "$HOME/.cargo/env"
-
-# >>> conda initialize >>>
-# !! Contents within this block are managed by 'conda init' !!
-__conda_setup="$('/home/alex/miniconda3/bin/conda' 'shell.bash' 'hook' 2> /dev/null)"
-if [ $? -eq 0 ]; then
-    eval "$__conda_setup"
-else
-    if [ -f "/home/alex/miniconda3/etc/profile.d/conda.sh" ]; then
-        . "/home/alex/miniconda3/etc/profile.d/conda.sh"
-    else
-        export PATH="/home/alex/miniconda3/bin:$PATH"
-    fi
-fi
-unset __conda_setup
-# <<< conda initialize <<<
-
-# Eternal bash history.
-# ---------------------
-# Undocumented feature which sets the size to "unlimited".
-# http://stackoverflow.com/questions/9457233/unlimited-bash-history
-export HISTFILESIZE=-1
-export HISTSIZE=-1
-export HISTTIMEFORMAT="[%F %T] "
-# Change the file location because certain bash sessions truncate .bash_history file upon close.
-# http://superuser.com/questions/575479/bash-history-truncated-to-500-lines-on-each-login
-export HISTFILE=~/.bash_eternal_history
-# Force prompt to write history after every command.
-# http://superuser.com/questions/20900/bash-history-loss
-PROMPT_COMMAND="history -a; $PROMPT_COMMAND"
+# NOTE: The below is commented out as it is obsoleted by atuin + ble.sh.
+# # Eternal bash history.
+# # ---------------------
+# # Undocumented feature which sets the size to "unlimited".
+# # http://stackoverflow.com/questions/9457233/unlimited-bash-history
+# export HISTFILESIZE=-1
+# export HISTSIZE=-1
+# export HISTTIMEFORMAT="[%F %T] "
+# # Change the file location because certain bash sessions truncate .bash_history file upon close.
+# # http://superuser.com/questions/575479/bash-history-truncated-to-500-lines-on-each-login
+# export HISTFILE=~/.bash_eternal_history
+# # Force prompt to write history after every command.
+# # http://superuser.com/questions/20900/bash-history-loss
+# PROMPT_COMMAND="history -a; $PROMPT_COMMAND"
 
 # Set default editor to nvim
 export EDITOR=nvim
@@ -188,15 +158,21 @@ export LESS=' -R '
 # Use batman instead which strips out sed colors
 eval "$(batman --export-env)"
 
-# Fix WSL2 CUDA: https://github.com/microsoft/WSL/issues/8587#issuecomment-1229170859
-export LD_LIBRARY_PATH=/usr/lib/wsl/lib:$LD_LIBRARY_PATH
+# Check if we're in WSL2
+if grep -qEi "(microsoft.*WSL2|WSL2.*microsoft)" /proc/version 2>/dev/null; then
+    # Fix WSL2 CUDA: https://github.com/microsoft/WSL/issues/8587#issuecomment-1229170859
+    export LD_LIBRARY_PATH=/usr/lib/wsl/lib:$LD_LIBRARY_PATH
 
-# Open new tabs in same dir on windows terminal: https://learn.microsoft.com/en-us/windows/terminal/tutorials/new-tab-same-directory#bash
-# Edited to deal with dangling semi-colon in original PROMPT_COMMAND
-if [[ -z $PROMPT_COMMAND && $PROMPT_COMMAND != *\;\  ]]; then
-    PROMPT_COMMAND="$PROMPT_COMMAND; "
+    # Add CUDA bin folder to path
+    export PATH=/usr/local/cuda/bin:$PATH
+
+    # Open new tabs in same dir on windows terminal: https://learn.microsoft.com/en-us/windows/terminal/tutorials/new-tab-same-directory#bash
+    # Edited to deal with dangling semi-colon in original PROMPT_COMMAND
+    if [[ -z $PROMPT_COMMAND && $PROMPT_COMMAND != *\;\  ]]; then
+        PROMPT_COMMAND="$PROMPT_COMMAND; "
+    fi
+    PROMPT_COMMAND=$PROMPT_COMMAND'printf "\e]9;9;%s\e\\" "$(wslpath -w "$PWD")"'
 fi
-PROMPT_COMMAND=$PROMPT_COMMAND'printf "\e]9;9;%s\e\\" "$(wslpath -w "$PWD")"'
 
 # Source completions from Nix installed packages
 # https://github.com/nix-community/home-manager/issues/1871#issuecomment-852739277
@@ -205,11 +181,12 @@ do
   source "${completion_script}"
 done
 
-# Add CUDA bin folder to path
-export PATH=/usr/local/cuda/bin:$PATH
-
 # Attach ble.sh
 [[ ! ${BLE_VERSION-} ]] || ble-attach
 
 # Enable atuin
 source ~/bin/atuin_setup.sh
+
+# Enable starship prompt
+export STARSHIP_CONFIG=~/.config/starship/starship.toml
+eval "$(starship init bash)"

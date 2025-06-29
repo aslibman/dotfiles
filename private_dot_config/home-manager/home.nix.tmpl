@@ -3,8 +3,8 @@
 {
   # Home Manager needs a bit of information about you and the
   # paths it should manage.
-  home.username = "alex";
-  home.homeDirectory = "/home/alex";
+  home.username = "{{ .chezmoi.username }}";
+  home.homeDirectory = "{{ .chezmoi.homeDir }}";
 
   # Packages that should be installed to the user profile.
   home.packages = with pkgs; [
@@ -13,6 +13,7 @@
     bat-extras.batgrep
     bat-extras.batman
     blesh
+    chezmoi
     delta
     du-dust
     eza
