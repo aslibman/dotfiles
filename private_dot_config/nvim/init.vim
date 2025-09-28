@@ -52,7 +52,8 @@ lua << EOF
 vim.notify = require("notify")
 
 require'nvim-treesitter.configs'.setup {
-    ensure_installed = "all",
+    ensure_installed = { "python", "c", "cpp", "rust", "make", "markdown", "json", "yaml", "toml", "go", "java" },
+    ignore_install = "all",
     highlight = { enable = true },
 }
 

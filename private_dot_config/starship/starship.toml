@@ -1,9 +1,11 @@
-format = """
+format = """\
 [╭](bold comment) \
 $username\
 $directory\
 $line_break\
 $character"""
+
+add_newline = false
 
 # Use the color palette
 palette = "dracula"
@@ -32,4 +34,3 @@ style = "bold yellow"
 [directory]
 style = "bold green"
 truncate_to_repo=false
-

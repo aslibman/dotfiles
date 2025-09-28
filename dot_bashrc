@@ -184,12 +184,31 @@ do
   source "${completion_script}"
 done
 
-# Enable starship prompt
-export STARSHIP_CONFIG=~/.config/starship/starship.toml
-eval "$(starship init bash)"
+# # Enable starship prompt
+# export STARSHIP_CONFIG=~/.config/starship/starship.toml
+# eval "$(starship init bash)"
 
 # Attach ble.sh
-[[ ! ${BLE_VERSION-} ]] || ble-attach
+# [[ ! ${BLE_VERSION-} ]] || ble-attach
 
 # Enable atuin
-source ~/bin/atuin_setup.sh
+# source ~/bin/atuin_setup.sh
+
+# Use fish for interactive shell instead
+case "$(uname -s)" in
+  Linux)
+    parent_shell=$(ps --no-header --pid=$PPID --format=comm 2>/dev/null)
+    ;;
+  Darwin)
+    parent_shell=$(ps -o comm= -p "$PPID" 2>/dev/null)
+    ;;
+  *)
+    parent_shell=""
+    ;;
+esac
+
+if [[ $parent_shell != "fish" && -z ${BASH_EXECUTION_STRING} && ${SHLVL} == 1 ]]
+then
+    shopt -q login_shell && LOGIN_OPTION='--login' || LOGIN_OPTION=''
+    exec fish $LOGIN_OPTION
+fi
