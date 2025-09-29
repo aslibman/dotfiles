@@ -27,8 +27,6 @@ shopt -s checkwinsize
 # Add custom bin scripts to PATH
 export PATH="~/.local/bin:$PATH"
 
-[[ $- == *i* ]] && source "$(blesh-share)"/ble.sh --noattach
-
 # make less more friendly for non-text input files, see lesspipe(1)
 [ -x /usr/bin/lesspipe ] && eval "$(SHELL=/bin/sh lesspipe)"
 
@@ -93,9 +91,6 @@ esac
 
 alias grep='grep --color=auto'
 
-# colored GCC warnings and errors
-#export GCC_COLORS='error=01;31:warning=01;35:note=01;36:caret=01;32:locus=01:quote=01'
-
 # Alias definitions.
 # See /usr/share/doc/bash-doc/examples in the bash-doc package.
 
@@ -133,21 +128,6 @@ if [ -f ~/.key_bindings ]; then
     source ~/.key_bindings
 fi
 
-# NOTE: The below is commented out as it is obsoleted by atuin + ble.sh.
-# # Eternal bash history.
-# # ---------------------
-# # Undocumented feature which sets the size to "unlimited".
-# # http://stackoverflow.com/questions/9457233/unlimited-bash-history
-# export HISTFILESIZE=-1
-# export HISTSIZE=-1
-# export HISTTIMEFORMAT="[%F %T] "
-# # Change the file location because certain bash sessions truncate .bash_history file upon close.
-# # http://superuser.com/questions/575479/bash-history-truncated-to-500-lines-on-each-login
-# export HISTFILE=~/.bash_eternal_history
-# # Force prompt to write history after every command.
-# # http://superuser.com/questions/20900/bash-history-loss
-# PROMPT_COMMAND="history -a; $PROMPT_COMMAND"
-
 # Set default editor to nvim
 export EDITOR=nvim
 
@@ -183,9 +163,6 @@ for completion_script in ~/.nix-profile/share/bash-completion/completions/*
 do
   source "${completion_script}"
 done
-
-# Attach ble.sh
-# [[ ! ${BLE_VERSION-} ]] || ble-attach
 
 # Use fish for interactive shell instead
 case "$(uname -s)" in
