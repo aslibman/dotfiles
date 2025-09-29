@@ -26,4 +26,11 @@ if status is-interactive
     # We must ensure this is run after fzf setup to override fzf's default CTRL-R search with atuin
     # See https://github.com/junegunn/fzf/issues/4417
     __atuin_setup
+
+    # Use bat for man pages - https://github.com/sharkdp/bat#man
+    batman --export-env | source
+
+    # Setup source-highlight for less pager
+    set --export LESSOPEN "| $HOME/.nix-profile/bin/src-hilite-lesspipe.sh %s"
+    set --export LESS -R
 end

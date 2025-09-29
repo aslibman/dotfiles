@@ -75,29 +75,6 @@ xterm*|rxvt*)
     ;;
 esac
 
-# Determine OS and set color support accordingly
-case "$(uname -s)" in
-  Linux) 
-    if [ -x /usr/bin/dircolors ]; then
-        test -r ~/.dircolors && eval "$(dircolors -b ~/.dircolors)" || eval "$(dircolors -b)"
-        alias ls='ls --color=auto'
-    fi
-    ;;
-  Darwin) 
-    # macOS uses BSD ls; use built-in color flags
-    alias ls='ls -G'
-    ;;
-esac
-
-alias grep='grep --color=auto'
-
-# Alias definitions.
-# See /usr/share/doc/bash-doc/examples in the bash-doc package.
-
-if [ -f ~/.bash_aliases ]; then
-    . ~/.bash_aliases
-fi
-
 # enable programmable completion features (you don't need to enable
 # this, if it's already enabled in /etc/bash.bashrc and /etc/profile
 # sources /etc/bash.bashrc).
@@ -109,20 +86,6 @@ if ! shopt -oq posix; then
   fi
 fi
 
-# Preview file content using bat (https://github.com/sharkdp/bat)
-export FZF_CTRL_T_OPTS="
-  --preview 'bat -n --color=always {}'
-  --bind 'ctrl-/:change-preview-window(down|hidden|)'"
-
-# Enable fzf key-bindings
-if command -v fzf-share >/dev/null; then
-  source "$(fzf-share)/key-bindings.bash"
-  source "$(fzf-share)/completion.bash"
-fi
-
-# Dracula FZF theme: https://draculatheme.com/fzf
-export FZF_DEFAULT_OPTS='--color=fg:#f8f8f2,bg:#282a36,hl:#bd93f9 --color=fg+:#f8f8f2,bg+:#44475a,hl+:#bd93f9 --color=info:#ffb86c,prompt:#50fa7b,pointer:#ff79c6 --color=marker:#ff79c6,spinner:#ffb86c,header:#6272a4'
-
 # Enable custom personal key-bindings
 if [ -f ~/.key_bindings ]; then
     source ~/.key_bindings
@@ -130,16 +93,6 @@ fi
 
 # Set default editor to nvim
 export EDITOR=nvim
-
-# Enable syntax highlighting in less
-# Requires installation of GNU highlight packages: see https://superuser.com/a/71593
-export LESSOPEN="| ~/.local/bin/src-hilite-lesspipe.sh %s"
-export LESS=' -R '
-
-# Use bat for man pages - https://github.com/sharkdp/bat#man
-# export MANPAGER="sh -c 'col -bx | bat -l man -p'"
-# Use batman instead which strips out sed colors
-eval "$(batman --export-env)"
 
 # Check if we're in WSL2
 if grep -qEi "(microsoft.*WSL2|WSL2.*microsoft)" /proc/version 2>/dev/null; then
@@ -156,13 +109,6 @@ if grep -qEi "(microsoft.*WSL2|WSL2.*microsoft)" /proc/version 2>/dev/null; then
     fi
     PROMPT_COMMAND=$PROMPT_COMMAND'printf "\e]9;9;%s\e\\" "$(wslpath -w "$PWD")"'
 fi
-
-# Source completions from Nix installed packages
-# https://github.com/nix-community/home-manager/issues/1871#issuecomment-852739277
-for completion_script in ~/.nix-profile/share/bash-completion/completions/*
-do
-  source "${completion_script}"
-done
 
 # Use fish for interactive shell instead
 case "$(uname -s)" in
