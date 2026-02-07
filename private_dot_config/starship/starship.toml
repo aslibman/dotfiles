@@ -1,5 +1,6 @@
 format = """\
 [╭](bold comment) \
+$python\
 $username\
 $directory\
 $line_break\
@@ -34,3 +35,7 @@ style = "bold yellow"
 [directory]
 style = "bold green"
 truncate_to_repo=false
+
+[python]
+format = '[(\($virtualenv\) )]($style)'
+generic_venv_names = [".venv"]
