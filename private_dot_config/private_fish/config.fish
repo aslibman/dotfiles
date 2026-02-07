@@ -33,4 +33,12 @@ if status is-interactive
     # Setup source-highlight for less pager
     set --export LESSOPEN "| $HOME/.nix-profile/bin/src-hilite-lesspipe.sh %s"
     set --export LESS -R
+
+    # Setup keychain for SSH key management
+    if type -q keychain
+        keychain --eval --quiet --agents ssh id_rsa id_ed25519 2>/dev/null
+        if test -f ~/.keychain/(hostname)-fish
+            source ~/.keychain/(hostname)-fish
+        end
+    end
 end
