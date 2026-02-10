@@ -10,7 +10,8 @@ echo "🔍 Running post-build validation..."
 echo ""
 
 # Test Neovim
-if ~/.config/home-manager/test-neovim.sh; then
+SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
+if "$SCRIPT_DIR/test-neovim.sh"; then
     echo ""
 else
     echo "❌ Neovim tests failed"

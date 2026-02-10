@@ -1,0 +1,69 @@
+name: Update flake.lock
+on:
+  schedule:
+    # Run weekly on Monday at 9:00 AM UTC
+    - cron: '0 9 * * 1'
+  workflow_dispatch: # Allow manual triggering
+
+jobs:
+  update-flake-lock:
+    runs-on: macos-latest
+    steps:
+      - name: Check out repository code
+        uses: actions/checkout@v5
+
+      - name: Install Nix
+        uses: DeterminateSystems/nix-installer-action@main
+
+      - name: Update flake.lock
+        id: update
+        run: |
+          cd home/private_dot_config/home-manager
+          nix flake update
+          if git diff --quiet flake.lock; then
+            echo "has_changes=false" >> $GITHUB_OUTPUT
+            echo "No changes to flake.lock"
+          else
+            echo "has_changes=true" >> $GITHUB_OUTPUT
+            echo "flake.lock has been updated"
+          fi
+
+      - name: Install chezmoi
+        if: steps.update.outputs.has_changes == 'true'
+        run: |
+          nix profile install nixpkgs#chezmoi
+
+      - name: Initialize chezmoi
+        if: steps.update.outputs.has_changes == 'true'
+        run: |
+          # .chezmoiroot tells chezmoi that home/ is the root
+          chezmoi init --source="${GITHUB_WORKSPACE}"
+
+      - name: Apply dotfiles to test update
+        if: steps.update.outputs.has_changes == 'true'
+        run: |
+          chezmoi apply --verbose
+
+      - name: Test home-manager switch with updated flake
+        if: steps.update.outputs.has_changes == 'true'
+        run: |
+          cd ~/.config/home-manager
+          nix run
+
+      - name: Run validation tests
+        if: steps.update.outputs.has_changes == 'true'
+        run: |
+          chmod +x "${GITHUB_WORKSPACE}/tests/"*.sh
+          "${GITHUB_WORKSPACE}/tests/test-neovim.sh"
+
+      - name: Commit and push changes
+        if: steps.update.outputs.has_changes == 'true'
+        run: |
+          cd "${GITHUB_WORKSPACE}/home/private_dot_config/home-manager"
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+          git add flake.lock
+          git commit -m "chore: update flake.lock
+
+          Co-Authored-By: github-actions[bot] <github-actions[bot]@users.noreply.github.com>"
+          git push
