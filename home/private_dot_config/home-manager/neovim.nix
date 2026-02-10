@@ -18,7 +18,34 @@
       vim-commentary
 
       # Treesitter
-      nvim-treesitter.withAllGrammars
+      (nvim-treesitter.withPlugins (p: [
+        p.bash
+        p.c
+        p.cpp
+        p.css
+        p.dockerfile
+        p.fish
+        p.go
+        p.html
+        p.java
+        p.javascript
+        p.json
+        p.lua
+        p.make
+        p.markdown
+        p.nix
+        p.python
+        p.regex
+        p.rust
+        p.sql
+        p.terraform
+        p.toml
+        p.tsx
+        p.typescript
+        p.vim
+        p.xml
+        p.yaml
+      ]))
 
       # Hardtime and dependencies
       nui-nvim
