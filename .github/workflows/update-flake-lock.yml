@@ -11,6 +11,8 @@ jobs:
     steps:
       - name: Check out repository code
         uses: actions/checkout@v5
+        with:
+          path: checkout
 
       - name: Install Nix
         uses: DeterminateSystems/nix-installer-action@main
@@ -31,30 +33,17 @@ jobs:
       - name: Install chezmoi
         if: steps.update.outputs.has_changes == 'true'
         run: |
-          nix profile install nixpkgs#chezmoi
+          nix profile add nixpkgs#chezmoi
 
-      - name: Initialize chezmoi
-        if: steps.update.outputs.has_changes == 'true'
+      - name: Initialize chezmoi and apply dotfiles
         run: |
-          # .chezmoiroot tells chezmoi that home/ is the root
-          chezmoi init --source="${GITHUB_WORKSPACE}"
-
-      - name: Apply dotfiles to test update
-        if: steps.update.outputs.has_changes == 'true'
-        run: |
-          chezmoi apply --verbose
+          chezmoi init --apply --source="${GITHUB_WORKSPACE}/checkout"
 
       - name: Test home-manager switch with updated flake
         if: steps.update.outputs.has_changes == 'true'
         run: |
-          cd ~/.config/home-manager
-          nix run
-
-      - name: Run validation tests
-        if: steps.update.outputs.has_changes == 'true'
-        run: |
-          chmod +x "${GITHUB_WORKSPACE}/tests/"*.sh
-          "${GITHUB_WORKSPACE}/tests/test-neovim.sh"
+          # This runs home-manager switch which includes validateNeovim hook
+          nix run ~/.config/home-manager
 
       - name: Commit and push changes
         if: steps.update.outputs.has_changes == 'true'

@@ -7,40 +7,20 @@ jobs:
     steps:
       - name: Check out repository code
         uses: actions/checkout@v5
+        with:
+          path: checkout
 
       - name: Install Nix
         uses: DeterminateSystems/nix-installer-action@main
 
       - name: Install chezmoi
         run: |
-          nix profile install nixpkgs#chezmoi
+          nix profile add nixpkgs#chezmoi
 
-      - name: Initialize chezmoi with test configuration
+      - name: Initialize chezmoi and apply dotfiles
         run: |
-          # .chezmoiroot tells chezmoi that home/ is the root
-          chezmoi init --source="${GITHUB_WORKSPACE}"
-
-      - name: Apply dotfiles (dry-run first)
-        run: |
-          # Dry-run to see what would be applied
-          chezmoi apply --dry-run --verbose
-
-      - name: Apply dotfiles
-        run: |
-          # Apply dotfiles (this processes templates)
-          chezmoi apply --verbose
+          chezmoi init --apply --source="${GITHUB_WORKSPACE}/checkout"
 
       - name: Run home-manager switch
         run: |
-          # Now that templates are processed, run home-manager
-          cd ~/.config/home-manager
-          nix run
-
-      - name: Run validation tests
-        run: |
-          chmod +x "${GITHUB_WORKSPACE}/tests/"*.sh
-          "${GITHUB_WORKSPACE}/tests/test-neovim.sh"
-
-      - name: Run post-build tests
-        run: |
-          "${GITHUB_WORKSPACE}/tests/test-post-build.sh"
+          nix run ~/.config/home-manager
