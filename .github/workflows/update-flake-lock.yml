@@ -7,7 +7,10 @@ on:
 
 jobs:
   update-flake-lock:
-    runs-on: macos-latest
+    runs-on: ${{ matrix.os }}
+    strategy:
+        matrix:
+            os: [ubuntu-latest, macos-latest]
     steps:
       - name: Check out repository code
         uses: actions/checkout@v5
@@ -20,7 +23,8 @@ jobs:
       - name: Update flake.lock
         id: update
         run: |
-          cd home/private_dot_config/home-manager
+          echo "GITHUB_WORKSPACE:${GITHUB_WORKSPACE}"
+          cd "${GITHUB_WORKSPACE}/checkout/home/private_dot_config/home-manager"
           nix flake update
           if git diff --quiet flake.lock; then
             echo "has_changes=false" >> $GITHUB_OUTPUT
@@ -36,19 +40,14 @@ jobs:
           nix profile add nixpkgs#chezmoi
 
       - name: Initialize chezmoi and apply dotfiles
-        run: |
-          chezmoi init --apply --source="${GITHUB_WORKSPACE}/checkout"
-
-      - name: Test home-manager switch with updated flake
         if: steps.update.outputs.has_changes == 'true'
         run: |
-          # This runs home-manager switch which includes validateNeovim hook
-          nix run ~/.config/home-manager
+          chezmoi init --apply --source="${GITHUB_WORKSPACE}/checkout"
 
       - name: Commit and push changes
         if: steps.update.outputs.has_changes == 'true'
         run: |
-          cd "${GITHUB_WORKSPACE}/home/private_dot_config/home-manager"
+          cd "${GITHUB_WORKSPACE}/checkout/home/private_dot_config/home-manager"
           git config user.name "github-actions[bot]"
           git config user.email "github-actions[bot]@users.noreply.github.com"
           git add flake.lock

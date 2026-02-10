@@ -1,26 +1,19 @@
 name: Test dotfiles installation
-on: [push, pull_request]
+on: [push]
 
 jobs:
   test:
-    runs-on: macos-latest
+    runs-on: ${{ matrix.os }}
+    strategy:
+        matrix:
+            os: [ubuntu-latest, macos-latest]
     steps:
       - name: Check out repository code
         uses: actions/checkout@v5
         with:
           path: checkout
 
-      - name: Install Nix
-        uses: DeterminateSystems/nix-installer-action@main
-
-      - name: Install chezmoi
+      - name: Run install script
         run: |
-          nix profile add nixpkgs#chezmoi
-
-      - name: Initialize chezmoi and apply dotfiles
-        run: |
-          chezmoi init --apply --source="${GITHUB_WORKSPACE}/checkout"
-
-      - name: Run home-manager switch
-        run: |
-          nix run ~/.config/home-manager
+          sh -c "$(curl -fsLS get.chezmoi.io)" -- \
+          init --apply --source="${GITHUB_WORKSPACE}/checkout"

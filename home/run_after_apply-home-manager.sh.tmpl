@@ -1,0 +1,36 @@
+#!/bin/bash
+# This script runs home-manager switch after dotfiles are applied
+# Ensures all packages and configurations are set up
+
+set -euo pipefail
+
+echo "Setting up home-manager..."
+
+# Source Nix if available
+if [ -f /nix/var/nix/profiles/default/etc/profile.d/nix-daemon.sh ]; then
+    . /nix/var/nix/profiles/default/etc/profile.d/nix-daemon.sh
+fi
+
+# Check if Nix is available
+if ! command -v nix &> /dev/null; then
+    echo "ERROR: Nix is not installed or not in PATH"
+    echo "Please restart your shell and run 'chezmoi apply' again"
+    exit 1
+fi
+
+# Path to home-manager flake
+HM_CONFIG="{{ .chezmoi.homeDir }}/.config/home-manager"
+
+if [ ! -d "$HM_CONFIG" ]; then
+    echo "ERROR: Home-manager config not found at $HM_CONFIG"
+    exit 1
+fi
+
+echo "Running home-manager switch..."
+cd "$HM_CONFIG"
+
+# Run home-manager switch using the flake
+nix run
+
+echo "✓ Home-manager setup complete!"
+echo "All your packages and configurations are now installed."
