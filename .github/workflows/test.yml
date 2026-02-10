@@ -1,0 +1,46 @@
+name: Test dotfiles installation
+on: [push, pull_request]
+
+jobs:
+  test:
+    runs-on: macos-latest
+    steps:
+      - name: Check out repository code
+        uses: actions/checkout@v5
+
+      - name: Install Nix
+        uses: DeterminateSystems/nix-installer-action@main
+
+      - name: Install chezmoi
+        run: |
+          nix profile install nixpkgs#chezmoi
+
+      - name: Initialize chezmoi with test configuration
+        run: |
+          # .chezmoiroot tells chezmoi that home/ is the root
+          chezmoi init --source="${GITHUB_WORKSPACE}"
+
+      - name: Apply dotfiles (dry-run first)
+        run: |
+          # Dry-run to see what would be applied
+          chezmoi apply --dry-run --verbose
+
+      - name: Apply dotfiles
+        run: |
+          # Apply dotfiles (this processes templates)
+          chezmoi apply --verbose
+
+      - name: Run home-manager switch
+        run: |
+          # Now that templates are processed, run home-manager
+          cd ~/.config/home-manager
+          nix run
+
+      - name: Run validation tests
+        run: |
+          chmod +x "${GITHUB_WORKSPACE}/tests/"*.sh
+          "${GITHUB_WORKSPACE}/tests/test-neovim.sh"
+
+      - name: Run post-build tests
+        run: |
+          "${GITHUB_WORKSPACE}/tests/test-post-build.sh"
