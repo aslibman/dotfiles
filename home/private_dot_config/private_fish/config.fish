@@ -7,6 +7,9 @@ function fish_postexec --on-event fish_postexec
 end
 
 if status is-interactive
+    # Add custom bin scripts to PATH
+    fish_add_path  "$HOME/.local/bin"
+
     # Enable starship prompt
     set --export STARSHIP_CONFIG ~/.config/starship/starship.toml
     starship init fish | source
