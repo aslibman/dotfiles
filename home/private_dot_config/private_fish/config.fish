@@ -7,6 +7,9 @@ function fish_postexec --on-event fish_postexec
 end
 
 if status is-interactive
+    # Enable vi mode
+    fish_vi_key_bindings
+
     # Add custom bin scripts to PATH
     fish_add_path  "$HOME/.local/bin"
 

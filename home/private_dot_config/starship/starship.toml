@@ -26,8 +26,12 @@ red = "#ff5555"
 yellow = "#f1fa8c"
 
 [character]
-success_symbol = "[╰─❯](bold comment)"
-error_symbol = "[╰─❯](bold comment)"
+format = "[╰─$symbol](bold comment) "
+success_symbol = "❯"
+error_symbol = "❯"
+vimcmd_symbol = "[❮](green)"
+vimcmd_replace_symbol = "[❮](purple)"
+vimcmd_visual_symbol = "[❮](yellow)"
 
 [cmd_duration]
 style = "bold yellow"
