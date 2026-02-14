@@ -7,11 +7,19 @@
     mutableExtensionsDir = true;
 
     profiles.default = {
-      extensions = with pkgs.vscode-extensions; [
-        asvetliakov.vscode-neovim
-        jnoortheen.nix-ide
-        ms-python.python
-        ms-toolsai.jupyter
+      extensions = pkgs.nix4vscode.forVscode [
+        "anthropic.claude-code"
+        "asvetliakov.vscode-neovim"
+        "astral-sh.ty"
+        "github.vscode-github-actions"
+        "jnoortheen.nix-ide"
+        "ms-python.debugpy"
+        "ms-python.python"
+        "ms-python.vscode-python-envs"
+        "ms-toolsai.jupyter"
+        "ms-toolsai.jupyter-keymap"
+        "ms-toolsai.jupyter-renderers"
+        "ms-toolsai.vscode-jupyter-cell-tags"
       ];
 
       userSettings = {
@@ -48,4 +56,17 @@
       ];
     };
   };
+
+  home.activation.validateVscode = config.lib.dag.entryAfter ["linkGeneration"] ''
+    run echo "🔍 Validating VSCode configuration..."
+
+    if ! run ${pkgs.writeShellScript "test-vscode-wrapper" ''
+      export PATH="${config.home.profileDirectory}/bin:$PATH"
+      ${./test-vscode.sh}
+    ''}; then
+      echo "❌ VSCode validation failed!"
+      echo "Fix the errors above before the configuration can be activated."
+      exit 1
+    fi
+  '';
 }
