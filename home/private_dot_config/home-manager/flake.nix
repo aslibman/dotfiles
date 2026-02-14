@@ -11,13 +11,16 @@
       url = "github:nix-community/nix4vscode";
       inputs.nixpkgs.follows = "nixpkgs";
     };
+    mac-app-util.url = "github:hraban/mac-app-util";
   };
 
-  outputs = { self, nixpkgs, home-manager, nix4vscode, ... }:
+  outputs = { self, nixpkgs, home-manager, nix4vscode, mac-app-util, ... }:
     let
       systems = [ "aarch64-darwin" "x86_64-darwin" "aarch64-linux" "x86_64-linux" ];
 
       forAllSystems = f: nixpkgs.lib.genAttrs systems (system: f system);
+
+      isDarwin = system: builtins.match ".*-darwin" system != null;
 
       mkHomeConfiguration = system: home-manager.lib.homeManagerConfiguration {
         pkgs = import nixpkgs {
@@ -25,7 +28,10 @@
           config.allowUnfree = true;
           overlays = [ nix4vscode.overlays.default ];
         };
-        modules = [ ./home.nix ];
+        modules = [ ./home.nix ]
+          ++ nixpkgs.lib.optionals (isDarwin system) [
+            mac-app-util.homeManagerModules.default
+          ];
       };
     in {
       homeConfigurations = forAllSystems mkHomeConfiguration;

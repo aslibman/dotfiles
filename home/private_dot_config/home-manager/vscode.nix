@@ -27,6 +27,9 @@
         "editor.minimap.enabled" = false;
         "editor.lineNumbers" = "relative";
         "explorer.confirmDelete" = false;
+        "update.mode" = "none";
+        "extensions.autoUpdate" = false;
+        "extensions.autoCheckUpdates" = false;
         "extensions.experimental.affinity" = {
           "asvetliakov.vscode-neovim" = 1;
         };
