@@ -29,7 +29,7 @@
           default = {
             type = "app";
             program = toString (pkgs.writeShellScript "home-manager-switch" ''
-              exec ${home-manager.packages.${system}.default}/bin/home-manager switch --flake ${self}#${system} "$@"
+              exec ${home-manager.packages.${system}.default}/bin/home-manager switch -b backup --flake ${self}#${system} "$@"
             '');
           };
         }

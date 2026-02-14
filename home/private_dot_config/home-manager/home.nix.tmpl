@@ -1,9 +1,12 @@
 { config, pkgs, ... }:
 
 {
+  nixpkgs.config.allowUnfree = true;
+  
   imports = [
     ./neovim.nix
     ./tmux.nix
+    ./vscode.nix
   ];
 
   # Home Manager needs a bit of information about you and the
