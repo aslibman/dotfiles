@@ -1,0 +1,18 @@
+{
+  "Profiles": [
+    {
+      "Name": "Default",
+      "Guid": "A0BD7FE2-1084-4143-B9B5-B798204380E3",
+      "Normal Font": "InconsolataNFM-Regular 18",
+      "Option Key Sends": 2,
+      "Right Option Key Sends": 2,
+      "Unlimited Scrollback": true,
+      "Scrollback Lines": 0,
+      "Silence Bell": true,
+      "Visual Bell": true,
+      "Show Mark Indicators": false,
+      "Place Prompt at First Column": false,
+      "Prompt Before Closing 2": false
+    }
+  ]
+}

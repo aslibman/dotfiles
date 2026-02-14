@@ -31,6 +31,7 @@
         modules = [ ./home.nix ]
           ++ nixpkgs.lib.optionals (isDarwin system) [
             mac-app-util.homeManagerModules.default
+            ./iterm2
           ];
       };
     in {
