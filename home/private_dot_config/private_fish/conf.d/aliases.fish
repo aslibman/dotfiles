@@ -11,3 +11,6 @@ alias vim="nvim"
 
 # Use eza instead of ls
 alias ls="eza"
+
+# Alias git amend
+alias gamend="git commit --amend --no-edit"
