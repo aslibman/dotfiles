@@ -30,6 +30,8 @@
         "update.mode" = "none";
         "extensions.autoUpdate" = false;
         "extensions.autoCheckUpdates" = false;
+        "files.autoSave" = "afterDelay";
+        "files.autoSaveDelay" = 1000;
         "extensions.experimental.affinity" = {
           "asvetliakov.vscode-neovim" = 1;
         };
