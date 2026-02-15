@@ -38,18 +38,18 @@
       keybindings = [
         {
           key = "up";
-          command = "selectPrevCodeAction";
-          when = "suggestWidgetVisible && textInputFocus && !editorReadonly && vim.mode == 'Insert'";
+          command = "selectPrevSuggestion";
+          when = "suggestWidgetVisible && textInputFocus && !editorReadonly";
         }
         {
           key = "up";
-          command = "-selectPrevCodeAction";
-          when = "codeActionMenuVisible";
+          command = "-selectPrevSuggestion";
+          when = "suggestWidgetMultipleSuggestions && suggestWidgetVisible && textInputFocus || suggestWidgetVisible && textInputFocus && !suggestWidgetHasFocusedSuggestion";
         }
         {
           key = "down";
           command = "selectNextSuggestion";
-          when = "suggestWidgetVisible && textInputFocus && !editorReadonly && vim.mode == 'Insert'";
+          when = "suggestWidgetVisible && textInputFocus && !editorReadonly";
         }
         {
           key = "down";
