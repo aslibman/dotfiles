@@ -83,11 +83,6 @@ if ! shopt -oq posix; then
   fi
 fi
 
-# Enable custom personal key-bindings
-if [ -f ~/.key_bindings ]; then
-    source ~/.key_bindings
-fi
-
 # Set default editor to nvim
 export EDITOR=nvim
 
