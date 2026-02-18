@@ -7,10 +7,9 @@ on:
 
 jobs:
   update-flake-lock:
-    runs-on: ${{ matrix.os }}
-    strategy:
-        matrix:
-            os: [ubuntu-latest, macos-latest]
+    runs-on: ubuntu-latest
+    outputs:
+      has_changes: ${{ steps.update.outputs.has_changes }}
     steps:
       - name: Check out repository code
         uses: actions/checkout@v5
@@ -23,7 +22,6 @@ jobs:
       - name: Update flake.lock
         id: update
         run: |
-          echo "GITHUB_WORKSPACE:${GITHUB_WORKSPACE}"
           cd "${GITHUB_WORKSPACE}/checkout/home/private_dot_config/home-manager"
           nix flake update
           if git diff --quiet flake.lock; then
@@ -34,20 +32,59 @@ jobs:
             echo "flake.lock has been updated"
           fi
 
-      - name: Install chezmoi
+      - name: Upload updated flake.lock
         if: steps.update.outputs.has_changes == 'true'
+        uses: actions/upload-artifact@v4
+        with:
+          name: flake-lock
+          path: checkout/home/private_dot_config/home-manager/flake.lock
+
+  validate:
+    needs: update-flake-lock
+    if: needs.update-flake-lock.outputs.has_changes == 'true'
+    runs-on: ${{ matrix.os }}
+    strategy:
+        matrix:
+            os: [ubuntu-latest, macos-latest]
+    steps:
+      - name: Check out repository code
+        uses: actions/checkout@v5
+        with:
+          path: checkout
+
+      - name: Download updated flake.lock
+        uses: actions/download-artifact@v4
+        with:
+          name: flake-lock
+          path: checkout/home/private_dot_config/home-manager
+
+      - name: Install Nix
+        uses: DeterminateSystems/nix-installer-action@main
+
+      - name: Install chezmoi
         run: |
           nix profile add nixpkgs#chezmoi
 
       - name: Initialize chezmoi and apply dotfiles
-        if: steps.update.outputs.has_changes == 'true'
         run: |
           chezmoi init --apply --source="${GITHUB_WORKSPACE}/checkout"
 
+  commit-and-push:
+    needs: validate
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check out repository code
+        uses: actions/checkout@v5
+
+      - name: Download updated flake.lock
+        uses: actions/download-artifact@v4
+        with:
+          name: flake-lock
+          path: home/private_dot_config/home-manager
+
       - name: Commit and push changes
-        if: steps.update.outputs.has_changes == 'true'
         run: |
-          cd "${GITHUB_WORKSPACE}/checkout/home/private_dot_config/home-manager"
+          cd "${GITHUB_WORKSPACE}/home/private_dot_config/home-manager"
           git config user.name "github-actions[bot]"
           git config user.email "github-actions[bot]@users.noreply.github.com"
           git add flake.lock
