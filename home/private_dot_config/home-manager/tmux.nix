@@ -21,7 +21,6 @@
           set -g @dracula-show-flags true
         '';
       }
-      # fingers
     ];
 
     extraConfig = ''

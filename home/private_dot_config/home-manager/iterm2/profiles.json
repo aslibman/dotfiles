@@ -12,7 +12,8 @@
       "Visual Bell": true,
       "Show Mark Indicators": false,
       "Place Prompt at First Column": false,
-      "Prompt Before Closing 2": false
+      "Prompt Before Closing 2": false,
+      "Use tmux integration": true
     }
   ]
 }
