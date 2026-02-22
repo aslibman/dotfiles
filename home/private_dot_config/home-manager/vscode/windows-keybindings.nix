@@ -9,7 +9,12 @@
   { key = "ctrl+a"; command = "editor.action.selectAll";            when = "editorTextFocus"; }
   { key = "ctrl+s"; command = "workbench.action.files.save"; }
   { key = "ctrl+f"; command = "actions.find";                       when = "editorFocus"; }
+  { key = "ctrl+shift+f"; command = "workbench.action.findInFiles"; when = "editorFocus"; }
   { key = "ctrl+w"; command = "workbench.action.closeActiveEditor"; }
+  { key = "ctrl+left";        command = "cursorWordLeft";        when = "editorTextFocus"; }
+  { key = "ctrl+right";       command = "cursorWordRight";       when = "editorTextFocus"; }
+  { key = "ctrl+shift+left";  command = "cursorWordLeftSelect";  when = "editorTextFocus"; }
+  { key = "ctrl+shift+right"; command = "cursorWordRightSelect"; when = "editorTextFocus"; }
   { key = "ctrl+tab";       command = "workbench.action.nextEditor"; }
   { key = "ctrl+shift+tab"; command = "workbench.action.previousEditor"; }
 ]
