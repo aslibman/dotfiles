@@ -35,6 +35,13 @@
         "extensions.experimental.affinity" = {
           "asvetliakov.vscode-neovim" = 1;
         };
+        "github.copilot.enable" = {
+          "*" = false;
+        };
+        "github.copilot.editor.enableAutoCompletions" = false;
+        "github.copilot.chat.enabled" = false;
+        "github.copilot.renameSuggestions.triggerAutomatically" = false;
+        "github.copilot.nextEditSuggestions.enabled" = false;
       };
 
       keybindings = [
