@@ -1,4 +1,8 @@
-{ config, pkgs, ... }:
+{ config, pkgs, lib, ... }:
+
+let
+  windowsKeybindings = import ./windows-keybindings.nix;
+in
 
 {
   programs.vscode = {
@@ -44,7 +48,7 @@
         "github.copilot.nextEditSuggestions.enabled" = false;
       };
 
-      keybindings = [
+      keybindings = windowsKeybindings ++ [
         {
           key = "up";
           command = "selectPrevSuggestion";

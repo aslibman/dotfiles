@@ -4,9 +4,9 @@
   nixpkgs.config.allowUnfree = true;
   
   imports = [
-    ./neovim.nix
+    ./neovim
     ./tmux.nix
-    ./vscode.nix
+    ./vscode
   ];
 
   home.username = "{{ .chezmoi.username }}";
