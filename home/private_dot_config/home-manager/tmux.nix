@@ -8,6 +8,7 @@
     escapeTime = 1;
     mouse = true;
     terminal = "tmux-256color";
+    keyMode = "vi";
 
     plugins = with pkgs.tmuxPlugins; [
       {
@@ -56,6 +57,10 @@
 
       # Disable right-click menu
       unbind -n MouseDown3Pane
+
+      # Copy mode prompt navigation
+      bind -T copy-mode n send-keys -X next-prompt
+      bind -T copy-mode p send-keys -X previous-prompt
 
       # Disable visual activity for speed
       set -g visual-activity off

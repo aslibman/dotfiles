@@ -34,11 +34,12 @@ in
         "update.mode" = "none";
         "extensions.autoUpdate" = false;
         "extensions.autoCheckUpdates" = false;
-        "files.autoSave" = "afterDelay";
-        "files.autoSaveDelay" = 1000;
+        "extensions.ignoreRecommendations" = true;
         "extensions.experimental.affinity" = {
           "asvetliakov.vscode-neovim" = 1;
         };
+        "files.autoSave" = "afterDelay";
+        "files.autoSaveDelay" = 1000;
         "github.copilot.enable" = {
           "*" = false;
         };
