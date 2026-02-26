@@ -13,7 +13,24 @@
       "Show Mark Indicators": false,
       "Place Prompt at First Column": false,
       "Prompt Before Closing 2": false,
-      "Use tmux integration": true
+      "Use tmux integration": true,
+      "Custom Command": "Yes",
+      "Command": "/opt/homebrew/bin/bash -l -c \"tmux new-session -A -s main\""
+    },
+    {
+      "Name": "Shell",
+      "Guid": "B1CE8GF3-2195-5254-C0C6-C809315491F4",
+      "Normal Font": "InconsolataNFM-Regular 18",
+      "Option Key Sends": 2,
+      "Right Option Key Sends": 2,
+      "Unlimited Scrollback": true,
+      "Scrollback Lines": 0,
+      "Silence Bell": true,
+      "Visual Bell": true,
+      "Show Mark Indicators": false,
+      "Place Prompt at First Column": false,
+      "Prompt Before Closing 2": false,
+      "Custom Command": "No"
     }
   ]
 }
