@@ -73,7 +73,10 @@ in
       ];
     };
   };
-
+  
+  home.file.".vscode-server/data/Machine/settings.json".source = config.lib.file.mkOutOfStoreSymlink "${config.xdg.configHome}/Code/User/settings.json";
+  home.file.".vscode-server/extensions".source = config.lib.file.mkOutOfStoreSymlink "${config.home.homeDirectory}/.vscode/extensions";
+  
   home.activation.validateVscode = config.lib.dag.entryAfter ["linkGeneration"] ''
     run echo "🔍 Validating VSCode configuration..."
 

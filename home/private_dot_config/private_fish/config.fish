@@ -1,6 +1,9 @@
 # Disable greeting message
 set -g fish_greeting
 
+# Set WSL-specific envvar to silence VSCode install
+set -gx DONT_PROMPT_WSL_INSTALL No_Prompt_please
+
 function fish_postexec --on-event fish_postexec
     set -l last_status $status
     print_prompt_separator $last_status
