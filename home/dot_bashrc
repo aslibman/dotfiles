@@ -99,7 +99,13 @@ if grep -qEi "(microsoft.*WSL2|WSL2.*microsoft)" /proc/version 2>/dev/null; then
     if [[ -z $PROMPT_COMMAND && $PROMPT_COMMAND != *\;\  ]]; then
         PROMPT_COMMAND="$PROMPT_COMMAND; "
     fi
-    PROMPT_COMMAND=$PROMPT_COMMAND'printf "\e]9;9;%s\e\\" "$(wslpath -w "$PWD")"'
+
+    __wsl_pwd() {
+        printf "\e]9;9;%s\e\\" "$(wslpath -w "$PWD")"
+    }
+    PROMPT_COMMAND="${PROMPT_COMMAND%'; '}"
+    PROMPT_COMMAND="${PROMPT_COMMAND%';'}"
+    PROMPT_COMMAND="${PROMPT_COMMAND:+$PROMPT_COMMAND; }__wsl_pwd"
 fi
 
 # Use fish for interactive shell instead
