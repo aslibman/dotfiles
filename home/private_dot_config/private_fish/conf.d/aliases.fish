@@ -12,5 +12,11 @@ alias vim="nvim"
 # Use eza instead of ls
 alias ls="eza"
 
+# Use fd instead of find
+alias find="fd"
+
+# Use procs instead of ps
+alias ps="procs"
+
 # Alias git amend
 alias gamend="git commit --amend --no-edit"
