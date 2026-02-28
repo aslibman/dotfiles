@@ -15,6 +15,7 @@ in
         "anthropic.claude-code"
         "asvetliakov.vscode-neovim"
         "astral-sh.ty"
+        "charliermarsh.ruff"
         "github.vscode-github-actions"
         "jnoortheen.nix-ide"
         "ms-python.debugpy"
@@ -47,6 +48,9 @@ in
         "github.copilot.chat.enabled" = false;
         "github.copilot.renameSuggestions.triggerAutomatically" = false;
         "github.copilot.nextEditSuggestions.enabled" = false;
+        # Remove "a" from neovim's ctrl key capture so ctrl+a triggers select-all in VSCode
+        "vscode-neovim.ctrlKeysForInsertMode" = ["c" "d" "h" "j" "m" "o" "r" "t" "u" "w"];
+        "vscode-neovim.ctrlKeysForNormalMode" = ["b" "c" "d" "e" "f" "h" "i" "j" "k" "l" "m" "o" "r" "t" "u" "v" "w" "x" "y" "z" "/" "]" "right" "left" "up" "down" "backspace" "delete"];
       };
 
       keybindings = windowsKeybindings ++ [
