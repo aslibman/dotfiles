@@ -25,7 +25,7 @@
     ];
 
     extraConfig = ''
-      # Use fish shell
+      # Use fish shell; Run as login shell to ensure paths set properly on MacOS
       set -g default-command "bash -l -c 'exec fish'"
 
       # Pane settings
