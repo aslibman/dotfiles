@@ -14,7 +14,7 @@ if status is-interactive
     fish_vi_key_bindings
 
     # Add custom bin scripts to PATH
-    fish_add_path  "$HOME/.local/bin"
+    fish_add_path "$HOME/.local/bin"
 
     # Enable starship prompt
     set --export STARSHIP_CONFIG ~/.config/starship/starship.toml

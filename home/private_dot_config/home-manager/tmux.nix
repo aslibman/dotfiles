@@ -26,7 +26,7 @@
 
     extraConfig = ''
       # Use fish shell
-      set -g default-command fish
+      set -g default-command "bash -l -c 'exec fish'"
 
       # Pane settings
       set -g pane-base-index 1

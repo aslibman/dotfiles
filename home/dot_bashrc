@@ -37,9 +37,6 @@ case "$TERM" in
     xterm-color|*-256color) color_prompt=yes;;
 esac
 
-# Export truecolor COLORTERM; some programs utilize this instead of TERM
-export COLORTERM=truecolor
-
 # uncomment for a colored prompt, if the terminal has the capability; turned
 # off by default to not distract the user: the focus in a terminal window
 # should be on the output of commands, not on the prompt
@@ -82,9 +79,6 @@ if ! shopt -oq posix; then
     . /etc/bash_completion
   fi
 fi
-
-# Set default editor to nvim
-export EDITOR=nvim
 
 # Check if we're in WSL2
 if grep -qEi "(microsoft.*WSL2|WSL2.*microsoft)" /proc/version 2>/dev/null; then
