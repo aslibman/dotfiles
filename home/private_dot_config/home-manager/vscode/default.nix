@@ -25,6 +25,7 @@ in
         "ms-toolsai.jupyter-keymap"
         "ms-toolsai.jupyter-renderers"
         "ms-toolsai.vscode-jupyter-cell-tags"
+        "ms-vscode-remote.remote-containers"
       ];
 
       userSettings = {
@@ -39,6 +40,7 @@ in
         "extensions.experimental.affinity" = {
           "asvetliakov.vscode-neovim" = 1;
         };
+        "dev.containers.dockerPath" = "/opt/podman/bin/podman";
         "files.autoSave" = "afterDelay";
         "files.autoSaveDelay" = 1000;
         "github.copilot.enable" = {
