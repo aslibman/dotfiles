@@ -59,7 +59,7 @@
 
   services.podman = {
     enable = true;
-
+  } // lib.optionalAttrs pkgs.stdenv.isDarwin {
     # Override nix-darwin's volumes manually because the default does
     # not currently actually use the podman CLI's default volumes.
     # https://sourcegraph.com/r/github.com/nix-community/home-manager@2b9504d5a0169d4940a312abe2df2c5658db8de9/-/blob/modules/services/podman/darwin.nix?L86 
