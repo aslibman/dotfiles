@@ -1,4 +1,4 @@
-{ config, pkgs, ... }:
+{ config, pkgs, lib, ... }:
 
 {
   nixpkgs.config.allowUnfree = true;
@@ -28,6 +28,7 @@
     git
     graphviz
     keychain
+    openssh
     procs
     reef
     ripgrep
@@ -55,4 +56,11 @@
   };
 
   programs.home-manager.enable = true;
+
+  services.podman.enable = true;
+
+  # `podman machine init` requires ssh-keygen on the PATH
+  home.activation.podmanSshPath = lib.hm.dag.entryBefore [ "podmanMachines" ] ''
+    export PATH="${pkgs.openssh}/bin:$PATH"
+  '';
 }

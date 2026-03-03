@@ -36,6 +36,7 @@
       find = "fd";
       ps = "procs";
       gamend = "git commit --amend --no-edit";
+      docker = "podman";
     };
 
     functions = {
