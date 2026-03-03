@@ -57,7 +57,17 @@
 
   programs.home-manager.enable = true;
 
-  services.podman.enable = true;
+  services.podman = {
+    enable = true;
+
+    # Override nix-darwin's volumes manually because the default does
+    # not currently actually use the podman CLI's default volumes.
+    # https://sourcegraph.com/r/github.com/nix-community/home-manager@2b9504d5a0169d4940a312abe2df2c5658db8de9/-/blob/modules/services/podman/darwin.nix?L86 
+    useDefaultMachine = false;
+    machines.dev-machine = {
+      volumes = [ "/Users:/Users" ];
+    };
+  };
 
   # `podman machine init` requires ssh-keygen on the PATH
   home.activation.podmanSshPath = lib.hm.dag.entryBefore [ "podmanMachines" ] ''

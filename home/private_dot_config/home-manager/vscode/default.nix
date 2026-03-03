@@ -2,8 +2,32 @@
 
 let
   windowsKeybindings = import ./windows-keybindings.nix;
-in
 
+  # Extensions that can be installed remotely into workspaces
+  workspaceExtensions = pkgs.nix4vscode.forVscode [
+    "anthropic.claude-code"
+    "astral-sh.ty"
+    "charliermarsh.ruff"
+    "eamodio.gitlens"
+    "jnoortheen.nix-ide"
+    "ms-python.debugpy"
+    "ms-python.python"
+    "ms-python.vscode-python-envs"
+    "ms-toolsai.jupyter"
+    "ms-toolsai.jupyter-keymap"
+    "ms-toolsai.jupyter-renderers"
+    "ms-toolsai.vscode-jupyter-cell-tags"
+    "rust-lang.rust-analyzer"
+    "tamasfe.even-better-toml"
+  ];
+
+  # Local UI-only extensions
+  localExtensions = pkgs.nix4vscode.forVscode [
+    "asvetliakov.vscode-neovim"
+    "ms-vscode-remote.remote-containers"
+    "github.vscode-github-actions"
+  ];
+in
 {
   programs.vscode = {
     enable = true;
@@ -11,49 +35,40 @@ in
     mutableExtensionsDir = true;
 
     profiles.default = {
-      extensions = pkgs.nix4vscode.forVscode [
-        "anthropic.claude-code"
-        "asvetliakov.vscode-neovim"
-        "astral-sh.ty"
-        "charliermarsh.ruff"
-        "github.vscode-github-actions"
-        "jnoortheen.nix-ide"
-        "ms-python.debugpy"
-        "ms-python.python"
-        "ms-python.vscode-python-envs"
-        "ms-toolsai.jupyter"
-        "ms-toolsai.jupyter-keymap"
-        "ms-toolsai.jupyter-renderers"
-        "ms-toolsai.vscode-jupyter-cell-tags"
-        "ms-vscode-remote.remote-containers"
-      ];
+      extensions = workspaceExtensions ++ localExtensions;
 
-      userSettings = {
-        "claudeCode.preferredLocation" = "panel";
-        "editor.minimap.enabled" = false;
-        "editor.lineNumbers" = "relative";
-        "explorer.confirmDelete" = false;
-        "update.mode" = "none";
-        "extensions.autoUpdate" = false;
-        "extensions.autoCheckUpdates" = false;
-        "extensions.ignoreRecommendations" = true;
-        "extensions.experimental.affinity" = {
-          "asvetliakov.vscode-neovim" = 1;
+      userSettings = 
+        let devcontainerSettings = {
+          "dev.containers.dockerPath" = "podman";
+          # Mirror workspace extensions into every devcontainer at the same pinned versions
+          "dev.containers.defaultExtensions" = lib.map (pkg: "${pkg.vscodeExtUniqueId}@${pkg.version}") workspaceExtensions;
         };
-        "dev.containers.dockerPath" = "/opt/podman/bin/podman";
-        "files.autoSave" = "afterDelay";
-        "files.autoSaveDelay" = 1000;
-        "github.copilot.enable" = {
-          "*" = false;
-        };
-        "github.copilot.editor.enableAutoCompletions" = false;
-        "github.copilot.chat.enabled" = false;
-        "github.copilot.renameSuggestions.triggerAutomatically" = false;
-        "github.copilot.nextEditSuggestions.enabled" = false;
-        # Remove "a" from neovim's ctrl key capture so ctrl+a triggers select-all in VSCode
-        "vscode-neovim.ctrlKeysForInsertMode" = ["c" "d" "h" "j" "m" "o" "r" "t" "u" "w"];
-        "vscode-neovim.ctrlKeysForNormalMode" = ["b" "c" "d" "e" "f" "h" "i" "j" "k" "l" "m" "o" "r" "t" "u" "v" "w" "x" "y" "z" "/" "]" "right" "left" "up" "down" "backspace" "delete"];
-      };
+        in
+        {
+          "claudeCode.preferredLocation" = "panel";
+          "editor.minimap.enabled" = false;
+          "editor.lineNumbers" = "relative";
+          "explorer.confirmDelete" = false;
+          "update.mode" = "none";
+          "extensions.autoUpdate" = false;
+          "extensions.autoCheckUpdates" = false;
+          "extensions.ignoreRecommendations" = true;
+          "extensions.experimental.affinity" = {
+            "asvetliakov.vscode-neovim" = 1;
+          };
+          "files.autoSave" = "afterDelay";
+          "files.autoSaveDelay" = 1000;
+          "github.copilot.enable" = {
+            "*" = false;
+          };
+          "github.copilot.editor.enableAutoCompletions" = false;
+          "github.copilot.chat.enabled" = false;
+          "github.copilot.renameSuggestions.triggerAutomatically" = false;
+          "github.copilot.nextEditSuggestions.enabled" = false;
+          # Remove some of neovim's CTRL key captures
+          "vscode-neovim.ctrlKeysForInsertMode" = ["d" "h" "j" "m" "o" "r" "t" "u" "w"];
+          "vscode-neovim.ctrlKeysForNormalMode" = ["b" "d" "e" "f" "h" "i" "j" "k" "l" "m" "o" "r" "t" "u" "w" "x" "y" "z" "/" "]" "right" "left" "up" "down" "backspace" "delete"];
+        } // devcontainerSettings;
 
       keybindings = windowsKeybindings ++ [
         {
@@ -79,10 +94,10 @@ in
       ];
     };
   };
-  
+
   home.file.".vscode-server/data/Machine/settings.json".source = config.lib.file.mkOutOfStoreSymlink "${config.xdg.configHome}/Code/User/settings.json";
   home.file.".vscode-server/extensions".source = config.lib.file.mkOutOfStoreSymlink "${config.home.homeDirectory}/.vscode/extensions";
-  
+
   home.activation.validateVscode = config.lib.dag.entryAfter ["linkGeneration"] ''
     run echo "🔍 Validating VSCode configuration..."
 
