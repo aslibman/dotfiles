@@ -8,8 +8,7 @@
 let
   windowsKeybindings = import ./windows-keybindings.nix;
 
-  # Extensions that can be installed remotely into workspaces
-  workspaceExtensions = pkgs.nix4vscode.forVscode [
+  extensions = pkgs.nix4vscode.forVscode [
     "anthropic.claude-code"
     "astral-sh.ty"
     "charliermarsh.ruff"
@@ -24,10 +23,6 @@ let
     "ms-toolsai.vscode-jupyter-cell-tags"
     "rust-lang.rust-analyzer"
     "tamasfe.even-better-toml"
-  ];
-
-  # Local UI-only extensions
-  localExtensions = pkgs.nix4vscode.forVscode [
     "asvetliakov.vscode-neovim"
     "ms-vscode-remote.remote-containers"
     "github.vscode-github-actions"
@@ -40,16 +35,12 @@ in
     mutableExtensionsDir = true;
 
     profiles.default = {
-      extensions = workspaceExtensions ++ localExtensions;
+      inherit extensions;
 
-      userSettings =
-        let
+      userSettings = 
+        let 
           devcontainerSettings = {
             "dev.containers.dockerPath" = "podman";
-            # Mirror workspace extensions into every devcontainer at the same pinned versions
-            "dev.containers.defaultExtensions" = lib.map (
-              pkg: "${pkg.vscodeExtUniqueId}@${pkg.version}"
-            ) workspaceExtensions;
           };
         in
         {
