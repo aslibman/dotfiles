@@ -1,10 +1,20 @@
 {
   description = "Home-manager dotfiles";
 
-  inputs.nixpkgs.url = "github:nixos/nixpkgs/nixpkgs-unstable";
+  inputs = {
+    nixpkgs.url = "github:nixos/nixpkgs/nixpkgs-unstable";
+    treefmt-nix = {
+      url = "github:numtide/treefmt-nix";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
+  };
 
   outputs =
-    { self, nixpkgs }:
+    {
+      self,
+      nixpkgs,
+      treefmt-nix,
+    }:
     let
       systems = [
         "aarch64-darwin"
@@ -13,9 +23,21 @@
         "x86_64-linux"
       ];
       forAllSystems = f: nixpkgs.lib.genAttrs systems (system: f system);
+
+      treefmtEval = forAllSystems (
+        system:
+        treefmt-nix.lib.evalModule nixpkgs.legacyPackages.${system} (
+          { pkgs, ... }:
+          {
+            projectRootFile = "flake.nix";
+            programs.nixfmt.enable = true;
+            programs.yamlfmt.enable = true;
+          }
+        )
+      );
     in
     {
-      formatter = forAllSystems (system: nixpkgs.legacyPackages.${system}.nixfmt-tree);
+      formatter = forAllSystems (system: treefmtEval.${system}.config.build.wrapper);
 
       devShells = forAllSystems (
         system:
@@ -25,7 +47,7 @@
         {
           default = pkgs.mkShell {
             packages = [
-              pkgs.nixfmt-tree
+              treefmtEval.${system}.config.build.wrapper
               pkgs.prek
             ];
             shellHook = ''

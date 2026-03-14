@@ -6,4 +6,4 @@ repos:
         entry: treefmt --fail-on-change
         language: system
         pass_filenames: false
-        files: \.nix$
+        files: \.(nix|ya?ml)$

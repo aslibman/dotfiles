@@ -1,18 +1,16 @@
 name: Test dotfiles installation
 on: [push]
-
 jobs:
   test:
     runs-on: ${{ matrix.os }}
     strategy:
-        matrix:
-            os: [ubuntu-latest, macos-latest]
+      matrix:
+        os: [ubuntu-latest, macos-latest]
     steps:
       - name: Check out repository code
         uses: actions/checkout@v5
         with:
           path: checkout
-
       - name: Run install script
         run: |
           sh -c "$(curl -fsLS get.chezmoi.io)" -- \
