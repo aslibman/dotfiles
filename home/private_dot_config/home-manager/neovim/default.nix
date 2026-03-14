@@ -95,7 +95,7 @@
 
   # Post-activation validation - runs after new generation is linked
   # This ensures we're testing the newly built Neovim
-  home.activation.validateNeovim = config.lib.dag.entryAfter ["linkGeneration"] ''
+  home.activation.validateNeovim = config.lib.dag.entryAfter [ "linkGeneration" ] ''
     run echo "🔍 Validating Neovim configuration..."
 
     # Use the newly installed nvim from the new generation

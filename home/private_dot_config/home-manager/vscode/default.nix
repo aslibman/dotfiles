@@ -1,4 +1,9 @@
-{ config, pkgs, lib, ... }:
+{
+  config,
+  pkgs,
+  lib,
+  ...
+}:
 
 let
   windowsKeybindings = import ./windows-keybindings.nix;
@@ -37,12 +42,15 @@ in
     profiles.default = {
       extensions = workspaceExtensions ++ localExtensions;
 
-      userSettings = 
-        let devcontainerSettings = {
-          "dev.containers.dockerPath" = "podman";
-          # Mirror workspace extensions into every devcontainer at the same pinned versions
-          "dev.containers.defaultExtensions" = lib.map (pkg: "${pkg.vscodeExtUniqueId}@${pkg.version}") workspaceExtensions;
-        };
+      userSettings =
+        let
+          devcontainerSettings = {
+            "dev.containers.dockerPath" = "podman";
+            # Mirror workspace extensions into every devcontainer at the same pinned versions
+            "dev.containers.defaultExtensions" = lib.map (
+              pkg: "${pkg.vscodeExtUniqueId}@${pkg.version}"
+            ) workspaceExtensions;
+          };
         in
         {
           "claudeCode.preferredLocation" = "panel";
@@ -66,9 +74,47 @@ in
           "github.copilot.renameSuggestions.triggerAutomatically" = false;
           "github.copilot.nextEditSuggestions.enabled" = false;
           # Remove some of neovim's CTRL key captures
-          "vscode-neovim.ctrlKeysForInsertMode" = ["d" "h" "j" "m" "o" "r" "t" "u" "w"];
-          "vscode-neovim.ctrlKeysForNormalMode" = ["b" "d" "e" "f" "h" "i" "j" "k" "l" "m" "o" "r" "t" "u" "w" "x" "y" "z" "/" "]" "right" "left" "up" "down" "backspace" "delete"];
-        } // devcontainerSettings;
+          "vscode-neovim.ctrlKeysForInsertMode" = [
+            "d"
+            "h"
+            "j"
+            "m"
+            "o"
+            "r"
+            "t"
+            "u"
+            "w"
+          ];
+          "vscode-neovim.ctrlKeysForNormalMode" = [
+            "b"
+            "d"
+            "e"
+            "f"
+            "h"
+            "i"
+            "j"
+            "k"
+            "l"
+            "m"
+            "o"
+            "r"
+            "t"
+            "u"
+            "w"
+            "x"
+            "y"
+            "z"
+            "/"
+            "]"
+            "right"
+            "left"
+            "up"
+            "down"
+            "backspace"
+            "delete"
+          ];
+        }
+        // devcontainerSettings;
 
       keybindings = windowsKeybindings ++ [
         {
@@ -95,10 +141,12 @@ in
     };
   };
 
-  home.file.".vscode-server/data/Machine/settings.json".source = config.lib.file.mkOutOfStoreSymlink "${config.xdg.configHome}/Code/User/settings.json";
-  home.file.".vscode-server/extensions".source = config.lib.file.mkOutOfStoreSymlink "${config.home.homeDirectory}/.vscode/extensions";
+  home.file.".vscode-server/data/Machine/settings.json".source =
+    config.lib.file.mkOutOfStoreSymlink "${config.xdg.configHome}/Code/User/settings.json";
+  home.file.".vscode-server/extensions".source =
+    config.lib.file.mkOutOfStoreSymlink "${config.home.homeDirectory}/.vscode/extensions";
 
-  home.activation.validateVscode = config.lib.dag.entryAfter ["linkGeneration"] ''
+  home.activation.validateVscode = config.lib.dag.entryAfter [ "linkGeneration" ] ''
     run echo "🔍 Validating VSCode configuration..."
 
     if ! run ${pkgs.writeShellScript "test-vscode-wrapper" ''

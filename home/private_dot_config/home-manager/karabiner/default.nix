@@ -15,12 +15,14 @@ let
         virtual_hid_keyboard.keyboard_type_v2 = "ansi";
         simple_modifications = [
           {
-            from = { key_code = "caps_lock"; };
-            to = [{ key_code = "left_control"; }];
+            from = {
+              key_code = "caps_lock";
+            };
+            to = [ { key_code = "left_control"; } ];
           }
         ];
         complex_modifications = {
-          # Downloaded from 
+          # Downloaded from
           # https://raw.githubusercontent.com/rux616/karabiner-windows-mode/main/json/windows_shortcuts.json
           rules = windowsShortcuts.rules;
         };
