@@ -7,6 +7,7 @@
     ./atuin.nix
     ./bat.nix
     ./fish
+    ./fzf.nix
     ./neovim
     ./podman
     ./starship.nix
@@ -22,8 +23,6 @@
     dust
     eza
     fd
-    ffmpeg_6
-    fzf
     gcc
     git
     graphviz
@@ -33,7 +32,6 @@
     ripgrep
     rustup
     shellcheck
-    sourceHighlight
     tldr
     unzip
     uv
@@ -51,6 +49,7 @@
   programs.direnv = {
     enable = true;
     nix-direnv.enable = true;
+    config.global.hide_env_diff = true;
   };
 
   programs.home-manager.enable = true;
