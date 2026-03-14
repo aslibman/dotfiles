@@ -5,17 +5,16 @@ fzf_kill() {
     if [[ $(uname) = Linux ]]; then
         pid_col=2
     elif [[ $(uname) = Darwin ]]; then
-        pid_col=3;
+        pid_col=3
     else
         echo 'Error: unknown platform'
         return
     fi
-    local pids=$(
-      ps -f -u $USER | sed 1d | fzf --multi | tr -s [:blank:] | cut -d' ' -f"$pid_col"
-      )
+    local pids
+    pids=$(ps -f -u "$USER" | sed 1d | fzf --multi | tr -s '[:blank:]' | cut -d' ' -f"$pid_col")
     if [[ -n $pids ]]; then
         echo "$pids" | xargs kill -9 "$@"
     fi
 }
 
-fzf_kill
+fzf_kill "$@"
