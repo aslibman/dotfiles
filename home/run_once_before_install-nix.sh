@@ -17,9 +17,4 @@ echo "Installing Nix..."
 # Use Determinate Systems Nix installer
 curl --proto '=https' --tlsv1.2 -sSf -L https://install.determinate.systems/nix | sh -s -- install --no-confirm
 
-# Source Nix for the current session
-if [ -f /nix/var/nix/profiles/default/etc/profile.d/nix-daemon.sh ]; then
-    . /nix/var/nix/profiles/default/etc/profile.d/nix-daemon.sh
-fi
-
 echo "✓ Nix installed successfully!"
