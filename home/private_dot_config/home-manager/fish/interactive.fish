@@ -4,10 +4,6 @@ fish_vi_key_bindings
 # Add custom bin scripts to PATH
 fish_add_path "$HOME/.local/bin"
 
-# Enable starship prompt
-set --export STARSHIP_CONFIG ~/.config/starship/starship.toml
-starship init fish | source
-
 # Set up fzf key bindings
 fzf --fish | source
 
@@ -22,9 +18,6 @@ set --export FZF_DEFAULT_OPTS '--color=fg:#f8f8f2,bg:#282a36,hl:#bd93f9 --color=
 # Load atuin -- must run after fzf to override its CTRL-R binding
 # See https://github.com/junegunn/fzf/issues/4417
 __atuin_setup
-
-# Use bat for man pages - https://github.com/sharkdp/bat#man
-batman --export-env | source
 
 # Setup source-highlight for less pager
 set --export LESSOPEN "| $HOME/.nix-profile/bin/src-hilite-lesspipe.sh %s"

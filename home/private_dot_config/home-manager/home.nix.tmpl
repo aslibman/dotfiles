@@ -4,9 +4,12 @@
   nixpkgs.config.allowUnfree = true;
   
   imports = [
+    ./atuin.nix
+    ./bat.nix
     ./fish
     ./neovim
     ./podman
+    ./starship.nix
     ./tmux.nix
     ./vscode
   ];
@@ -15,10 +18,6 @@
   home.homeDirectory = "{{ .chezmoi.homeDir }}";
 
   home.packages = with pkgs; [
-    atuin
-    bat
-    bat-extras.batgrep
-    bat-extras.batman
     delta
     dust
     eza
@@ -35,7 +34,6 @@
     rustup
     shellcheck
     sourceHighlight
-    starship
     tldr
     unzip
     uv

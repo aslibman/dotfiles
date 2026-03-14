@@ -16,7 +16,7 @@ fi
 
 # Test 2: Verify vim keybindings extension is installed
 echo "→ Checking for Neovim extension..."
-if code --list-extensions 2>/dev/null | grep -qi "asvetliakov.vscode-neovim"; then
+if code --list-extensions | grep -qi "asvetliakov.vscode-neovim"; then
     echo "  ✓ vscode-neovim installed"
 else
     echo "  ✗ vscode-neovim not found"

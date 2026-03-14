@@ -6,11 +6,6 @@ set -euo pipefail
 
 echo "Setting up home-manager..."
 
-# Source Nix if available
-if [ -f /nix/var/nix/profiles/default/etc/profile.d/nix-daemon.sh ]; then
-    . /nix/var/nix/profiles/default/etc/profile.d/nix-daemon.sh
-fi
-
 # Check if Nix is available
 if ! command -v nix &> /dev/null; then
     echo "ERROR: Nix is not installed or not in PATH"

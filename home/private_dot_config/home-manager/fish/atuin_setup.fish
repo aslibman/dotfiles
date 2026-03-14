@@ -1,10 +1,3 @@
-# Bail if atuin not installed
-if not type -q atuin
-    return 1
-end
-
-atuin init fish --disable-up-arrow --disable-ctrl-r | source
-
 # Widget: fzf over atuin history with two columns:
 #   {relativetime}<TAB>{command}
 function fzf_atuin_history_widget
