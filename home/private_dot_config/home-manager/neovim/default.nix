@@ -16,6 +16,7 @@
 
       # Utilities
       vim-commentary
+      is-vim
 
       # Treesitter
       (nvim-treesitter.withPlugins (p: [

@@ -9,7 +9,6 @@ let
   windowsKeybindings = import ./windows-keybindings.nix;
 
   extensions = pkgs.nix4vscode.forVscode [
-    "anthropic.claude-code"
     "astral-sh.ty"
     "charliermarsh.ruff"
     "eamodio.gitlens"
@@ -29,6 +28,8 @@ let
   ];
 in
 {
+  imports = [ ./claude.nix ];
+
   programs.vscode = {
     enable = true;
 
@@ -37,14 +38,13 @@ in
     profiles.default = {
       inherit extensions;
 
-      userSettings = 
-        let 
+      userSettings =
+        let
           devcontainerSettings = {
             "dev.containers.dockerPath" = "podman";
           };
         in
         {
-          "claudeCode.preferredLocation" = "panel";
           "editor.minimap.enabled" = false;
           "editor.lineNumbers" = "relative";
           "explorer.confirmDelete" = false;
