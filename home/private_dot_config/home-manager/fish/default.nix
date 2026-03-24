@@ -15,9 +15,6 @@
       # fish_user_paths is always prepended to $PATH by fish.
       fish_add_path --move --prepend "$HOME/.nix-profile/bin"
 
-      # Dracula theme for eza: https://draculatheme.com/eza
-      set -gx EZA_COLORS "uu=36:uR=31:un=35:gu=37:da=2;34:ur=34:uw=95:ux=36:ue=36:gr=34:gw=35:gx=36:tr=34:tw=35:tx=36:xx=95:"
-
       # Use bat for syntax highlighting in less
       set -gx LESSOPEN "| bat --color=always --paging=never --style=plain -- %s 2>/dev/null"
       set -gx LESS -R
@@ -39,7 +36,6 @@
 
     shellAliases = {
       vim = "nvim";
-      ls = "eza";
       find = "fd";
       ps = "procs";
       gamend = "git commit --amend --no-edit";
