@@ -11,7 +11,6 @@ let
   extensions = pkgs.nix4vscode.forVscode [
     "astral-sh.ty"
     "charliermarsh.ruff"
-    "eamodio.gitlens"
     "jnoortheen.nix-ide"
     "ms-python.debugpy"
     "ms-python.python"
@@ -24,7 +23,6 @@ let
     "tamasfe.even-better-toml"
     "asvetliakov.vscode-neovim"
     "ms-vscode-remote.remote-containers"
-    "github.vscode-github-actions"
   ];
 in
 {
