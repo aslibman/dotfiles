@@ -3,3 +3,6 @@
 
 [diff]
     pager = "delta"
+
+[data]
+    gitEmail = {{ promptStringOnce . "gitEmail" "Git email address" | quote }}
