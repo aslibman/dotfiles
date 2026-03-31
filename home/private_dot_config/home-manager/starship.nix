@@ -4,7 +4,7 @@
   programs.starship = {
     enable = true;
     settings = {
-      format = "[╭](bold comment) $python$username$directory$line_break$character";
+      format = "[╭](bold comment) $python$direnv$username$directory$line_break$character";
       add_newline = false;
       palette = "dracula";
 
@@ -40,8 +40,15 @@
         truncate_to_repo = false;
       };
 
+      direnv = {
+        disabled = false;
+        format = ''[(\($symbol\) )]($style)'';
+        symbol = "direnv";
+        style = "bold orange";
+      };
+
       python = {
-        format = ''[(\($virtualenv\) )]($style)'';
+        format = ''[(\($symbol$virtualenv\) )]($style)'';
         generic_venv_names = [ ".venv" ];
       };
     };
