@@ -26,7 +26,10 @@ let
   ];
 in
 {
-  imports = [ ./claude.nix ];
+  imports = [
+    ./claude.nix
+    ./editable-profile.nix
+  ];
 
   programs.vscode = {
     enable = true;
@@ -130,8 +133,6 @@ in
     };
   };
 
-  home.file.".vscode-server/data/Machine/settings.json".source =
-    config.lib.file.mkOutOfStoreSymlink "${config.xdg.configHome}/Code/User/settings.json";
   home.file.".vscode-server/extensions".source =
     config.lib.file.mkOutOfStoreSymlink "${config.home.homeDirectory}/.vscode/extensions";
 
