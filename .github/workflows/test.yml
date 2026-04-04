@@ -14,4 +14,5 @@ jobs:
       - name: Run install script
         run: |
           sh -c "$(curl -fsLS get.chezmoi.io)" -- \
-          init --apply --source="${GITHUB_WORKSPACE}/checkout"
+          init --apply --source="${GITHUB_WORKSPACE}/checkout" \
+          --promptString='Git email address=ci@example.com'
