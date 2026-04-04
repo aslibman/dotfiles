@@ -22,6 +22,7 @@ let
     "tamasfe.even-better-toml"
     "asvetliakov.vscode-neovim"
     "ms-vscode-remote.remote-containers"
+    "dracula-theme.theme-dracula"
   ];
 in
 {
@@ -45,6 +46,7 @@ in
           };
         in
         {
+          "workbench.colorTheme" = "Dracula Theme";
           "nix.enableLanguageServer" = true;
           "nix.serverPath" = "${pkgs.nixd}/bin/nixd";
           "editor.minimap.enabled" = false;
