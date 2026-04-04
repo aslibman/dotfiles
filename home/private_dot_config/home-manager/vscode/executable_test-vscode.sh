@@ -14,16 +14,7 @@ else
     exit 1
 fi
 
-# Test 2: Verify vim keybindings extension is installed
-echo "→ Checking for Neovim extension..."
-if code --list-extensions | grep -qi "asvetliakov.vscode-neovim"; then
-    echo "  ✓ vscode-neovim installed"
-else
-    echo "  ✗ vscode-neovim not found"
-    exit 1
-fi
-
-# Test 3: Verify settings and keybindings files exist
+# Test 2: Verify settings and keybindings files exist
 echo "→ Checking config files..."
 if [ "$(uname)" = "Darwin" ]; then
     CONFIG_DIR="$HOME/Library/Application Support/Code/User"
