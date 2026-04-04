@@ -46,6 +46,8 @@ in
           };
         in
         {
+          "nix.enableLanguageServer" = true;
+          "nix.serverPath" = "${pkgs.nixd}/bin/nixd";
           "editor.minimap.enabled" = false;
           "editor.lineNumbers" = "relative";
           "explorer.confirmDelete" = false;
