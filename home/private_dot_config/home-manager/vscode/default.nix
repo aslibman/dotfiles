@@ -51,6 +51,10 @@ in
           "nix.serverPath" = "${pkgs.nixd}/bin/nixd";
           "editor.minimap.enabled" = false;
           "editor.lineNumbers" = "relative";
+          "editor.fontFamily" =
+            "'InconsolataLGC Nerd Font', 'InconsolataNerdFont', 'Inconsolata Nerd Font', monospace";
+          "editor.fontLigatures" = false;
+          "editor.fontSize" = 14;
           "explorer.confirmDelete" = false;
           "update.mode" = "none";
           "extensions.autoUpdate" = false;
