@@ -58,7 +58,8 @@ jobs:
           nix profile add nixpkgs#chezmoi
       - name: Initialize chezmoi and apply dotfiles
         run: |
-          chezmoi init --apply --source="${GITHUB_WORKSPACE}/checkout"
+          chezmoi init --apply --source="${GITHUB_WORKSPACE}/checkout" \
+          --promptString='Git email address=ci@example.com'
   commit-and-push:
     needs: validate
     runs-on: ubuntu-latest
