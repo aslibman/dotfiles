@@ -1,5 +1,8 @@
-{ ... }:
+{ pkgs, ... }:
 
+let
+  gitEmail = builtins.getEnv "GIT_EMAIL";
+in
 {
   programs.git = {
     # Helpful reference:
@@ -12,10 +15,10 @@
     settings = {
       user = {
         name = "Alex Libman";
-        email = "{{ .gitEmail }}";
+        email = gitEmail;
       };
 
-      credential.helper = {{ if eq .chezmoi.os "darwin" }}"osxkeychain"{{ else if (.chezmoi.kernel.osrelease | contains "microsoft") }}"wincred"{{ else }}"libsecret"{{ end }};
+      credential.helper = if pkgs.stdenv.isDarwin then "osxkeychain" else "libsecret";
       init.defaultBranch = "main";
 
       core.pager = "delta";

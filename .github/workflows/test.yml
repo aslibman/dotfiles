@@ -9,10 +9,7 @@ jobs:
     steps:
       - name: Check out repository code
         uses: actions/checkout@v5
-        with:
-          path: checkout
-      - name: Run install script
-        run: |
-          sh -c "$(curl -fsLS get.chezmoi.io)" -- \
-          init --apply --source="${GITHUB_WORKSPACE}/checkout" \
-          --promptString='Git email address=ci@example.com'
+      - name: Install Nix
+        uses: DeterminateSystems/nix-installer-action@main
+      - name: Run install
+        run: GIT_EMAIL=ci@example.com nix run . --impure

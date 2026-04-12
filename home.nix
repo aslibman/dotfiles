@@ -1,8 +1,8 @@
-{ config, pkgs, lib, ... }:
+{ pkgs, lib, ... }:
 
 {
   nixpkgs.config.allowUnfree = true;
-  
+
   imports = [
     ./atuin.nix
     ./bat.nix
@@ -18,8 +18,8 @@
     ./vscode
   ];
 
-  home.username = "{{ .chezmoi.username }}";
-  home.homeDirectory = "{{ .chezmoi.homeDir }}";
+  home.username = "alex";
+  home.homeDirectory = if pkgs.stdenv.isDarwin then "/Users/alex" else "/home/alex";
 
   home.packages = with pkgs; [
     claude-code
@@ -54,5 +54,4 @@
   };
 
   programs.home-manager.enable = true;
-
 }

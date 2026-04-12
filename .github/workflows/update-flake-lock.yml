@@ -19,7 +19,7 @@ jobs:
       - name: Update flake.lock
         id: update
         run: |
-          cd "${GITHUB_WORKSPACE}/checkout/home/private_dot_config/home-manager"
+          cd "${GITHUB_WORKSPACE}/checkout"
           nix flake update
           if git diff --quiet flake.lock; then
             echo "has_changes=false" >> $GITHUB_OUTPUT
@@ -33,7 +33,7 @@ jobs:
         uses: actions/upload-artifact@v4
         with:
           name: flake-lock
-          path: checkout/home/private_dot_config/home-manager/flake.lock
+          path: checkout/flake.lock
   validate:
     needs: update-flake-lock
     if: needs.update-flake-lock.outputs.has_changes == 'true'
@@ -50,16 +50,11 @@ jobs:
         uses: actions/download-artifact@v4
         with:
           name: flake-lock
-          path: checkout/home/private_dot_config/home-manager
+          path: checkout
       - name: Install Nix
         uses: DeterminateSystems/nix-installer-action@main
-      - name: Install chezmoi
-        run: |
-          nix profile add nixpkgs#chezmoi
-      - name: Initialize chezmoi and apply dotfiles
-        run: |
-          chezmoi init --apply --source="${GITHUB_WORKSPACE}/checkout" \
-          --promptString='Git email address=ci@example.com'
+      - name: Run home-manager switch
+        run: GIT_EMAIL=ci@example.com nix run "${GITHUB_WORKSPACE}/checkout" --impure
   commit-and-push:
     needs: validate
     runs-on: ubuntu-latest
@@ -70,10 +65,9 @@ jobs:
         uses: actions/download-artifact@v4
         with:
           name: flake-lock
-          path: home/private_dot_config/home-manager
+          path: .
       - name: Commit and push changes
         run: |
-          cd "${GITHUB_WORKSPACE}/home/private_dot_config/home-manager"
           git config user.name "github-actions[bot]"
           git config user.email "github-actions[bot]@users.noreply.github.com"
           git add flake.lock
