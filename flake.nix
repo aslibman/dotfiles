@@ -132,6 +132,7 @@
           default = pkgs.mkShell {
             packages = [
               treefmtEval.${system}.config.build.wrapper
+              pkgs.codespell
               pkgs.prek
               pkgs.shellcheck
             ];

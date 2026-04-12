@@ -1,0 +1,21 @@
+[[repos]]
+repo = "builtin"
+hooks = [
+  { id = "check-json" },
+  { id = "check-toml" },
+  { id = "check-yaml" },
+  { id = "check-merge-conflict" },
+  { id = "end-of-file-fixer" },
+  { id = "trailing-whitespace" },
+  { id = "detect-private-key" },
+  { id = "check-executables-have-shebangs" },
+  { id = "check-added-large-files" },
+]
+
+[[repos]]
+repo = "local"
+hooks = [
+  { id = "codespell", name = "codespell", entry = "codespell", language = "system", pass_filenames = true, exclude = ".*\\.lock" },
+  { id = "shellcheck", name = "shellcheck", entry = "shellcheck --color=always", language = "system", types = ["shell"] },
+  { id = "nixfmt", name = "nixfmt", entry = "treefmt --fail-on-change", language = "system", pass_filenames = false, files = "\\.(nix|ya?ml)$" },
+]
