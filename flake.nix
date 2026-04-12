@@ -73,6 +73,10 @@
             mac-app-util.homeManagerModules.default
             ./iterm2
             ./karabiner
+          ]
+          ++ nixpkgs.lib.optionals (!isDarwin system) [
+            ./linux.nix
+            ./ghostty
           ];
           extraSpecialArgs = {
             inherit username homeDirectory gitEmail;

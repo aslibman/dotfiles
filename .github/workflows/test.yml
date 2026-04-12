@@ -12,4 +12,4 @@ jobs:
       - name: Install Nix
         uses: DeterminateSystems/nix-installer-action@main
       - name: Run install
-        run: GIT_EMAIL=ci@example.com nix run . --impure
+        run: GIT_EMAIL=ci@example.com nix run .

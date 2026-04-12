@@ -7,7 +7,7 @@ Personal dotfiles managed with [home-manager](https://github.com/nix-community/h
 Install [Nix](https://nixos.org/download/) first, then:
 
 ```bash
-nix run github:aslibman/dotfiles --impure
+nix run github:aslibman/dotfiles
 ```
 
 You'll be prompted for your git email on first run (saved to `~/.config/git/email` for future runs).
