@@ -40,6 +40,8 @@
 
       isDarwin = system: builtins.match ".*-darwin" system != null;
 
+      overlays = [ nix4vscode.overlays.default ];
+
       treefmtEval = forAllSystems (
         system:
         treefmt-nix.lib.evalModule nixpkgs.legacyPackages.${system} (
@@ -61,9 +63,8 @@
         }:
         home-manager.lib.homeManagerConfiguration {
           pkgs = import nixpkgs {
-            inherit system;
+            inherit system overlays;
             config.allowUnfree = true;
-            overlays = [ nix4vscode.overlays.default ];
           };
           modules = [
             ./home.nix
@@ -79,6 +80,18 @@
         };
     in
     {
+      # For use in NixOS configurations — callers must supply all mkHomeConfiguration args
+      # via home-manager.extraSpecialArgs (or home-manager.users.<name>.extraSpecialArgs)
+      nixosModules.home =
+        { ... }:
+        {
+          nixpkgs = { inherit overlays; };
+          home-manager.useGlobalPkgs = true;
+          home-manager.useUserPackages = true;
+          home-manager.backupFileExtension = "backup";
+          home-manager.sharedModules = [ ./home.nix ];
+        };
+
       # homeConfigurations reads from the environment — only used by the nix run app
       homeConfigurations = forAllSystems (
         system:
