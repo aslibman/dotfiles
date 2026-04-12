@@ -54,6 +54,11 @@
 
       mkHomeConfiguration =
         system:
+        {
+          username,
+          homeDirectory,
+          gitEmail,
+        }:
         home-manager.lib.homeManagerConfiguration {
           pkgs = import nixpkgs {
             inherit system;
@@ -68,10 +73,21 @@
             ./iterm2
             ./karabiner
           ];
+          extraSpecialArgs = {
+            inherit username homeDirectory gitEmail;
+          };
         };
     in
     {
-      homeConfigurations = forAllSystems mkHomeConfiguration;
+      # homeConfigurations reads from the environment — only used by the nix run app
+      homeConfigurations = forAllSystems (
+        system:
+        mkHomeConfiguration system {
+          username = builtins.getEnv "USER";
+          homeDirectory = builtins.getEnv "HOME";
+          gitEmail = builtins.getEnv "GIT_EMAIL";
+        }
+      );
 
       apps = forAllSystems (
         system:

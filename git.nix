@@ -1,8 +1,5 @@
-{ pkgs, ... }:
+{ pkgs, gitEmail, ... }:
 
-let
-  gitEmail = builtins.getEnv "GIT_EMAIL";
-in
 {
   programs.git = {
     # Helpful reference:

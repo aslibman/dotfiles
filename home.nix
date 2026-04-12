@@ -1,4 +1,9 @@
-{ pkgs, lib, ... }:
+{
+  pkgs,
+  username,
+  homeDirectory,
+  ...
+}:
 
 {
   nixpkgs.config.allowUnfree = true;
@@ -18,8 +23,8 @@
     ./vscode
   ];
 
-  home.username = "alex";
-  home.homeDirectory = if pkgs.stdenv.isDarwin then "/Users/alex" else "/home/alex";
+  home.username = username;
+  home.homeDirectory = homeDirectory;
 
   home.packages = with pkgs; [
     claude-code
