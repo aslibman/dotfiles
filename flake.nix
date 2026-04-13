@@ -71,12 +71,10 @@
           ]
           ++ nixpkgs.lib.optionals (isDarwin system) [
             mac-app-util.homeManagerModules.default
-            ./iterm2
-            ./karabiner
+            ./darwin
           ]
           ++ nixpkgs.lib.optionals (!isDarwin system) [
-            ./linux.nix
-            ./ghostty
+            ./linux
           ];
           extraSpecialArgs = {
             inherit username homeDirectory gitEmail;
@@ -93,7 +91,10 @@
           home-manager.useGlobalPkgs = true;
           home-manager.useUserPackages = true;
           home-manager.backupFileExtension = "backup";
-          home-manager.sharedModules = [ ./home.nix ];
+          home-manager.sharedModules = [
+            ./home.nix
+            ./linux
+          ];
         };
 
       # homeConfigurations reads from the environment — only used by the nix run app
