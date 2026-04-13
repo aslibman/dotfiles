@@ -68,6 +68,7 @@
           };
           modules = [
             ./home.nix
+            ./shared
           ]
           ++ nixpkgs.lib.optionals (isDarwin system) [
             mac-app-util.homeManagerModules.default
@@ -93,6 +94,7 @@
           home-manager.backupFileExtension = "backup";
           home-manager.sharedModules = [
             ./home.nix
+            ./shared
             ./linux
           ];
         };

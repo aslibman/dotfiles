@@ -1,4 +1,4 @@
-{ ... }:
+{ pkgs, ... }:
 
 {
   imports = [
@@ -15,4 +15,34 @@
     ./tmux.nix
     ./vscode
   ];
+
+  home.packages = with pkgs; [
+    claude-code
+    delta
+    dust
+    fd
+    graphviz
+    keychain
+    procs
+    reef
+    ripgrep
+    rustup
+    shellcheck
+    tldr
+    unzip
+    uv
+  ];
+
+  home.sessionVariables = {
+    EDITOR = "nvim";
+    COLORTERM = "truecolor";
+  };
+
+  programs.bash.enable = true;
+
+  programs.direnv = {
+    enable = true;
+    nix-direnv.enable = true;
+    config.global.hide_env_diff = true;
+  };
 }
