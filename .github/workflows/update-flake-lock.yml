@@ -16,6 +16,8 @@ jobs:
           path: checkout
       - name: Install Nix
         uses: DeterminateSystems/nix-installer-action@main
+      - name: Enable Nix cache
+        uses: DeterminateSystems/magic-nix-cache-action@main
       - name: Update flake.lock
         id: update
         run: |
@@ -53,6 +55,8 @@ jobs:
           path: checkout
       - name: Install Nix
         uses: DeterminateSystems/nix-installer-action@main
+      - name: Enable Nix cache
+        uses: DeterminateSystems/magic-nix-cache-action@main
       - name: Run home-manager switch
         run: GIT_EMAIL=ci@example.com nix run "${GITHUB_WORKSPACE}/checkout" --impure
   commit-and-push:

@@ -11,5 +11,7 @@ jobs:
         uses: actions/checkout@v5
       - name: Install Nix
         uses: DeterminateSystems/nix-installer-action@main
+      - name: Enable Nix cache
+        uses: DeterminateSystems/magic-nix-cache-action@main
       - name: Run install
         run: GIT_EMAIL=ci@example.com nix run .
