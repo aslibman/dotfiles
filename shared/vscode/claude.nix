@@ -10,12 +10,12 @@ let
       eval "$(cd "$workspace" && DIRENV_LOG_FORMAT= direnv export bash 2>/dev/null)"
     fi
 
-    exec nono run -p claude-code \
+    exec ${pkgs.nono}/bin/nono run -p claude-code \
       --silent \
       --network-profile claude-code \
       --allow ${config.home.profileDirectory} \
       --allow "$workspace" \
-      -- claude "$@"
+      -- ${pkgs.claude-code}/bin/claude "$@"
   '';
 in
 {
@@ -27,7 +27,8 @@ in
 
   programs.vscode.profiles.default.userSettings = {
     "claudeCode.preferredLocation" = "panel";
-    "claudeCode.claudeProcessWrapper" = "${sandboxedClaude}/bin/sandboxed-claude";
+    # "claudeCode.claudeProcessWrapper" = "${sandboxedClaude}/bin/sandboxed-claude";
+    "claudeCode.claudeProcessWrapper" = "${pkgs.claude-code}/bin/claude";
     "claudeCode.initialPermissionMode" = "acceptEdits";
   };
 }
