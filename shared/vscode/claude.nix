@@ -10,12 +10,13 @@ let
       eval "$(cd "$workspace" && DIRENV_LOG_FORMAT= direnv export bash 2>/dev/null)"
     fi
 
-    exec ${pkgs.nono}/bin/nono run -p claude-code \
-      --silent \
-      --network-profile claude-code \
-      --allow ${config.home.profileDirectory} \
-      --allow "$workspace" \
-      -- ${pkgs.claude-code}/bin/claude "$@"
+    exec ${pkgs.claude-code}/bin/claude "$@"
+    # exec ${pkgs.nono}/bin/nono run -p claude-code \
+    #   --silent \
+    #   --network-profile claude-code \
+    #   --allow ${config.home.profileDirectory} \
+    #   --allow "$workspace" \
+    #   -- ${pkgs.claude-code}/bin/claude "$@"
   '';
 in
 {
