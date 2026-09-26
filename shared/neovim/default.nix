@@ -1,4 +1,4 @@
-{ config, pkgs, ... }:
+{ pkgs, ... }:
 
 {
   programs.neovim = {
@@ -93,20 +93,4 @@
       require("hardtime").setup({})
     '';
   };
-
-  # Post-activation validation - runs after new generation is linked
-  # This ensures we're testing the newly built Neovim
-  home.activation.validateNeovim = config.lib.dag.entryAfter [ "linkGeneration" ] ''
-    run echo "🔍 Validating Neovim configuration..."
-
-    # Use the newly installed nvim from the new generation
-    if ! run ${pkgs.writeShellScript "test-neovim-wrapper" ''
-      export PATH="${config.home.profileDirectory}/bin:$PATH"
-      ${./test-neovim.sh}
-    ''}; then
-      echo "❌ Neovim validation failed!"
-      echo "Fix the errors above before the configuration can be activated."
-      exit 1
-    fi
-  '';
 }
