@@ -1,4 +1,4 @@
-{ config, pkgs, ... }:
+{ pkgs, ... }:
 
 {
   programs.tmux = {
@@ -30,7 +30,6 @@
 
       # Pane settings
       set -g pane-base-index 1
-      set-window-option -g pane-base-index 1
       set-option -g renumber-windows on
 
       # Use Alt-arrow keys without prefix key to switch panes
@@ -49,8 +48,8 @@
       unbind '"'
       unbind %
 
-      # Enable colors
-      set-option -sa terminal-overrides ",xterm*:Tc"
+      # Truecolor passthrough
+      set -as terminal-features ",xterm*:RGB"
 
       # Aggressive resizing for clients
       setw -g aggressive-resize on
@@ -62,16 +61,10 @@
       bind -T copy-mode n send-keys -X next-prompt
       bind -T copy-mode p send-keys -X previous-prompt
 
-      # Disable visual activity for speed
+      # Silence activity and bell notifications
       set -g visual-activity off
       set -g visual-bell off
       set -g visual-silence on
-
-      # Powerline font
-      tmux_conf_theme_left_separator_main='\uE0B0'
-      tmux_conf_theme_left_separator_sub='\uE0B1'
-      tmux_conf_theme_right_separator_main='\uE0B2'
-      tmux_conf_theme_right_separator_sub='\uE0B3'
     '';
   };
 }

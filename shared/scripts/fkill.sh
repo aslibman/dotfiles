@@ -1,20 +1,4 @@
 #!/bin/bash
-
-fzf_kill() {
-    local pid_col
-    if [[ $(uname) = Linux ]]; then
-        pid_col=2
-    elif [[ $(uname) = Darwin ]]; then
-        pid_col=3
-    else
-        echo 'Error: unknown platform'
-        return
-    fi
-    local pids
-    pids=$(ps -f -u "$USER" | sed 1d | fzf --multi | tr -s '[:blank:]' | cut -d' ' -f"$pid_col")
-    if [[ -n $pids ]]; then
-        echo "$pids" | xargs kill -9 "$@"
-    fi
-}
-
-fzf_kill "$@"
+# Pick processes with fzf and kill them: `fkill [-SIGNAL]` (default -9).
+pids=$(ps -o pid=,command= -u "$USER" | fzf --multi | awk '{print $1}')
+[[ -n $pids ]] && echo "$pids" | xargs kill "${1:--9}"
