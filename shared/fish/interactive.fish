@@ -15,7 +15,5 @@ end
 
 # Key bindings
 bind / self-insert
-bind -M default / self-insert
 bind \cf ff-widget
-bind -M default \cf ff-widget
 bind -M insert \cf ff-widget

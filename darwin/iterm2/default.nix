@@ -1,10 +1,7 @@
 { pkgs, ... }:
 
 {
-  home.packages = with pkgs; [
-    iterm2
-    nerd-fonts.inconsolata
-  ];
+  home.packages = [ pkgs.iterm2 ];
 
   targets.darwin.defaults."com.googlecode.iterm2" = {
     SUEnableAutomaticChecks = false;

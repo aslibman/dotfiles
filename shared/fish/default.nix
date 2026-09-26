@@ -35,7 +35,6 @@
     };
 
     shellAliases = {
-      vim = "nvim";
       find = "fd";
       ps = "procs";
       gamend = "git commit --amend --no-edit";

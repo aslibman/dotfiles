@@ -23,6 +23,7 @@
     fd
     graphviz
     keychain
+    nerd-fonts.inconsolata
     procs
     reef
     ripgrep
@@ -33,10 +34,9 @@
     uv
   ];
 
-  home.sessionVariables = {
-    EDITOR = "nvim";
-    COLORTERM = "truecolor";
-  };
+  fonts.fontconfig.enable = true;
+
+  home.sessionVariables.COLORTERM = "truecolor";
 
   programs.bash.enable = true;
 
