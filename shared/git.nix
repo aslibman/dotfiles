@@ -26,7 +26,6 @@
         navigate = true;
         line-numbers = true;
         hyperlinks = true;
-        colorMoved = "default";
         syntax-theme = "Dracula";
       };
 
@@ -36,7 +35,7 @@
       # https://luppeng.wordpress.com/2020/10/10/when-to-use-each-of-the-git-diff-algorithms/
       diff = {
         algorithm = "histogram";
-        color = "no";
+        colorMoved = "default";
       };
 
       # zdiff3 includes context about previous code when resolving merge conflicts
