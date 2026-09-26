@@ -1,10 +1,6 @@
-{ pkgs, ... }:
+{ ... }:
 
 {
-  home.packages = with pkgs; [
-    nerd-fonts.inconsolata
-  ];
-
   programs.ghostty = {
     enable = true;
     settings = {

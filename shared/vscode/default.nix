@@ -39,81 +39,74 @@ in
     profiles.default = {
       inherit extensions;
 
-      userSettings =
-        let
-          devcontainerSettings = {
-            "dev.containers.dockerPath" = "podman";
-          };
-        in
-        {
-          "workbench.colorTheme" = "Dracula Theme";
-          "nix.enableLanguageServer" = true;
-          "nix.serverPath" = "${pkgs.nixd}/bin/nixd";
-          "editor.minimap.enabled" = false;
-          "editor.lineNumbers" = "relative";
-          "editor.fontFamily" =
-            "'InconsolataLGC Nerd Font', 'InconsolataNerdFont', 'Inconsolata Nerd Font', monospace";
-          "editor.fontLigatures" = false;
-          "editor.fontSize" = 14;
-          "explorer.confirmDelete" = false;
-          "update.mode" = "none";
-          "extensions.autoUpdate" = false;
-          "extensions.autoCheckUpdates" = false;
-          "extensions.ignoreRecommendations" = true;
-          "extensions.experimental.affinity" = {
-            "asvetliakov.vscode-neovim" = 1;
-          };
-          "files.autoSave" = "afterDelay";
-          "files.autoSaveDelay" = 1000;
-          "github.copilot.enable" = {
-            "*" = false;
-          };
-          "github.copilot.editor.enableAutoCompletions" = false;
-          "github.copilot.chat.enabled" = false;
-          "github.copilot.renameSuggestions.triggerAutomatically" = false;
-          "github.copilot.nextEditSuggestions.enabled" = false;
-          # Remove some of neovim's CTRL key captures
-          "vscode-neovim.ctrlKeysForInsertMode" = [
-            "d"
-            "h"
-            "j"
-            "m"
-            "o"
-            "r"
-            "t"
-            "u"
-            "w"
-          ];
-          "vscode-neovim.ctrlKeysForNormalMode" = [
-            "b"
-            "d"
-            "e"
-            "f"
-            "h"
-            "i"
-            "j"
-            "k"
-            "l"
-            "m"
-            "o"
-            "r"
-            "t"
-            "u"
-            "w"
-            "x"
-            "y"
-            "z"
-            "/"
-            "]"
-            "right"
-            "left"
-            "up"
-            "down"
-            "backspace"
-            "delete"
-          ];
-        }
-        // devcontainerSettings;
+      userSettings = {
+        "workbench.colorTheme" = "Dracula Theme";
+        "nix.enableLanguageServer" = true;
+        "nix.serverPath" = "${pkgs.nixd}/bin/nixd";
+        "editor.minimap.enabled" = false;
+        "editor.lineNumbers" = "relative";
+        "editor.fontFamily" = "'Inconsolata Nerd Font', monospace";
+        "editor.fontLigatures" = false;
+        "editor.fontSize" = 14;
+        "explorer.confirmDelete" = false;
+        "update.mode" = "none";
+        "extensions.autoUpdate" = false;
+        "extensions.autoCheckUpdates" = false;
+        "extensions.ignoreRecommendations" = true;
+        "extensions.experimental.affinity" = {
+          "asvetliakov.vscode-neovim" = 1;
+        };
+        "files.autoSave" = "afterDelay";
+        "files.autoSaveDelay" = 1000;
+        "github.copilot.enable" = {
+          "*" = false;
+        };
+        "github.copilot.editor.enableAutoCompletions" = false;
+        "github.copilot.chat.enabled" = false;
+        "github.copilot.renameSuggestions.triggerAutomatically" = false;
+        "github.copilot.nextEditSuggestions.enabled" = false;
+        # Remove some of neovim's CTRL key captures
+        "vscode-neovim.ctrlKeysForInsertMode" = [
+          "d"
+          "h"
+          "j"
+          "m"
+          "o"
+          "r"
+          "t"
+          "u"
+          "w"
+        ];
+        "vscode-neovim.ctrlKeysForNormalMode" = [
+          "b"
+          "d"
+          "e"
+          "f"
+          "h"
+          "i"
+          "j"
+          "k"
+          "l"
+          "m"
+          "o"
+          "r"
+          "t"
+          "u"
+          "w"
+          "x"
+          "y"
+          "z"
+          "/"
+          "]"
+          "right"
+          "left"
+          "up"
+          "down"
+          "backspace"
+          "delete"
+        ];
+        "dev.containers.dockerPath" = "podman";
+      };
 
       keybindings = windowsKeybindings ++ [
         {
