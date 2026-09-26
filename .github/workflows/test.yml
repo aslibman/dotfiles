@@ -1,17 +1,36 @@
 name: Test dotfiles installation
-on: [push]
+on:
+  push:
+  workflow_call:
+    inputs:
+      flake-lock-artifact:
+        description: Uploaded flake.lock artifact to test instead of the committed one
+        type: string
+        default: ""
 jobs:
-  test:
+  lint:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v7
+      - uses: DeterminateSystems/nix-installer-action@v23
+      - uses: DeterminateSystems/magic-nix-cache-action@v15
+      - name: Run pre-commit hooks
+        run: nix develop -c prek run --all-files --show-diff-on-failure
+  install:
     runs-on: ${{ matrix.os }}
     strategy:
       matrix:
         os: [ubuntu-latest, macos-latest]
     steps:
-      - name: Check out repository code
-        uses: actions/checkout@v5
-      - name: Install Nix
-        uses: DeterminateSystems/nix-installer-action@main
-      - name: Enable Nix cache
-        uses: DeterminateSystems/magic-nix-cache-action@main
+      - uses: actions/checkout@v7
+      - name: Use updated flake.lock
+        if: inputs.flake-lock-artifact != ''
+        uses: actions/download-artifact@v8
+        with:
+          name: ${{ inputs.flake-lock-artifact }}
+      - uses: DeterminateSystems/nix-installer-action@v23
+      - uses: DeterminateSystems/magic-nix-cache-action@v15
+      - name: Run flake checks
+        run: nix flake check
       - name: Run install
         run: GIT_EMAIL=ci@example.com nix run .
