@@ -22,7 +22,6 @@
     dust
     fd
     graphviz
-    keychain
     nerd-fonts.inconsolata
     procs
     reef
@@ -36,7 +35,22 @@
 
   fonts.fontconfig.enable = true;
 
-  home.sessionVariables.COLORTERM = "truecolor";
+  home.sessionVariables = {
+    COLORTERM = "truecolor";
+    # Use bat for syntax highlighting in less
+    LESSOPEN = "| bat --color=always --paging=never --style=plain -- %s 2>/dev/null";
+    LESS = "-R";
+    # Silence VSCode's "install in WSL" prompt
+    DONT_PROMPT_WSL_INSTALL = "No_Prompt_please";
+  };
+
+  programs.keychain = {
+    enable = true;
+    keys = [
+      "id_ed25519"
+      "id_rsa"
+    ];
+  };
 
   programs.bash.enable = true;
 

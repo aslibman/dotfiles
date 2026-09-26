@@ -7,9 +7,6 @@ set rtcolor (set_color bryellow)     # Runtime color
 set errcolor (set_color red)         # Error code color
 set reset (set_color normal)
 
-# Terminal width
-set cols (tput cols)
-
 # Current date and time
 set datetime (date "+%Y-%m-%d %H:%M:%S")
 
@@ -45,11 +42,11 @@ set center_text "$timecolor$datetime$reset$runtime$status_text"
 
 # Compute left/right padding
 set text_len (string length --visible $center_text)
-set left_len (math --scale=0 "($cols - $text_len) / 2")
-set right_len (math --scale=0 "$cols - $left_len - $text_len")
+set left_len (math --scale=0 "($COLUMNS - $text_len) / 2")
+set right_len (math --scale=0 "$COLUMNS - $left_len - $text_len")
 
 set left (string repeat -n $left_len $dot)
 set right (string repeat -n $right_len $dot)
 
 # Print full-width dotted line with centered info
-printf "\n$color$left$reset$center_text$color$right$reset\n"
+printf '\n%s\n' "$color$left$reset$center_text$color$right$reset"

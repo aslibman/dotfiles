@@ -54,40 +54,22 @@
       nvim-notify
     ];
 
-    extraConfig = ''
-      " File format settings
-      set ff=unix
-      set number
-      set relativenumber
-
-      " Indentation settings
-      set autoindent
-      set tabstop=4
-      set shiftwidth=4
-      set smarttab
-      set expandtab
-      set softtabstop=4
-      filetype indent on
-
-      " Miscellaneous settings
-      set mouse=a
-      set showmatch
-      set incsearch
-      set hlsearch
-      set scrolloff=6
-
-      " Enable Dracula theme
-      set termguicolors
-      let g:dracula_italic = 0
-      colorscheme dracula
-    '';
-
     initLua = ''
-      -- Disable unused providers (removes healthcheck warnings)
-      vim.g.loaded_python3_provider = 0
-      vim.g.loaded_ruby_provider = 0
-      vim.g.loaded_node_provider = 0
-      vim.g.loaded_perl_provider = 0
+      vim.opt.number = true
+      vim.opt.relativenumber = true
+
+      vim.opt.tabstop = 4
+      vim.opt.shiftwidth = 4
+      vim.opt.softtabstop = 4
+      vim.opt.expandtab = true
+
+      vim.opt.mouse = "a"
+      vim.opt.showmatch = true
+      vim.opt.scrolloff = 6
+
+      vim.opt.termguicolors = true
+      vim.g.dracula_italic = 0
+      vim.cmd.colorscheme("dracula")
 
       vim.notify = require("notify")
       require("hardtime").setup({})

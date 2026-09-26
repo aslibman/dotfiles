@@ -1,4 +1,4 @@
-{ ... }:
+{ config, ... }:
 
 {
   programs.fish = {
@@ -8,16 +8,8 @@
       # Disable greeting message
       set -g fish_greeting
 
-      # Set WSL-specific envvar to silence VSCode install
-      set -gx DONT_PROMPT_WSL_INSTALL No_Prompt_please
-
-      # Ensure ~/.nix-profile/bin takes priority over system paths.
-      # fish_user_paths is always prepended to $PATH by fish.
-      fish_add_path --move --prepend "$HOME/.nix-profile/bin"
-
-      # Use bat for syntax highlighting in less
-      set -gx LESSOPEN "| bat --color=always --paging=never --style=plain -- %s 2>/dev/null"
-      set -gx LESS -R
+      # Ensure the Nix profile takes priority over system paths
+      fish_add_path --move --prepend "${config.home.profileDirectory}/bin"
     '';
 
     interactiveShellInit = builtins.readFile ./interactive.fish;

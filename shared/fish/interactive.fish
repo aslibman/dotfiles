@@ -5,14 +5,6 @@ fish_vi_key_bindings
 # See https://github.com/junegunn/fzf/issues/4417
 __atuin_setup
 
-# Setup keychain for SSH key management
-if type -q keychain
-    keychain --eval --quiet --agents ssh id_rsa id_ed25519 2>/dev/null
-    if test -f ~/.keychain/(hostname)-fish
-        source ~/.keychain/(hostname)-fish
-    end
-end
-
 # Key bindings
 bind / self-insert
 bind \cf ff-widget
