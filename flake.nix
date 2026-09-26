@@ -35,22 +35,35 @@
         "x86_64-linux"
       ];
 
-      forAllSystems = f: nixpkgs.lib.genAttrs systems (system: f system);
+      inherit (nixpkgs) lib;
 
-      isDarwin = system: builtins.match ".*-darwin" system != null;
+      forAllSystems = lib.genAttrs systems;
+
+      isDarwin = lib.hasSuffix "-darwin";
+
+      # Pure evaluation (e.g. `nix flake check`) sees empty env vars, so fall back
+      # to placeholders. Real switches go through the app below, which uses --impure.
+      getEnvOr =
+        name: default:
+        let
+          value = builtins.getEnv name;
+        in
+        if value == "" then default else value;
+
+      commonModules = [
+        ./home.nix
+        ./shared
+      ];
 
       overlays = [ nix4vscode.overlays.default ];
 
       treefmtEval = forAllSystems (
         system:
-        treefmt-nix.lib.evalModule nixpkgs.legacyPackages.${system} (
-          { pkgs, ... }:
-          {
-            projectRootFile = "flake.nix";
-            programs.nixfmt.enable = true;
-            programs.yamlfmt.enable = true;
-          }
-        )
+        treefmt-nix.lib.evalModule nixpkgs.legacyPackages.${system} {
+          projectRootFile = "flake.nix";
+          programs.nixfmt.enable = true;
+          programs.yamlfmt.enable = true;
+        }
       );
 
       mkHomeConfiguration =
@@ -65,17 +78,17 @@
             inherit system overlays;
             config.allowUnfree = true;
           };
-          modules = [
-            ./home.nix
-            ./shared
-          ]
-          ++ nixpkgs.lib.optionals (isDarwin system) [
-            mac-app-util.homeManagerModules.default
-            ./darwin
-          ]
-          ++ nixpkgs.lib.optionals (!isDarwin system) [
-            ./linux
-          ];
+          modules =
+            commonModules
+            ++ (
+              if isDarwin system then
+                [
+                  mac-app-util.homeManagerModules.default
+                  ./darwin
+                ]
+              else
+                [ ./linux ]
+            );
           extraSpecialArgs = {
             inherit username homeDirectory gitEmail;
           };
@@ -91,20 +104,19 @@
           home-manager.useGlobalPkgs = true;
           home-manager.useUserPackages = true;
           home-manager.backupFileExtension = "backup";
-          home-manager.sharedModules = [
-            ./home.nix
-            ./shared
-            ./linux
-          ];
+          home-manager.sharedModules = commonModules ++ [ ./linux ];
         };
 
       # homeConfigurations reads from the environment — only used by the nix run app
       homeConfigurations = forAllSystems (
         system:
+        let
+          username = getEnvOr "USER" "user";
+        in
         mkHomeConfiguration system {
-          username = builtins.getEnv "USER";
-          homeDirectory = builtins.getEnv "HOME";
-          gitEmail = builtins.getEnv "GIT_EMAIL";
+          inherit username;
+          homeDirectory = getEnvOr "HOME" ((if isDarwin system then "/Users/" else "/home/") + username);
+          gitEmail = getEnvOr "GIT_EMAIL" "user@example.com";
         }
       );
 
