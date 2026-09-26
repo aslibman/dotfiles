@@ -15,7 +15,7 @@
         email = gitEmail;
       };
 
-      credential.helper = if pkgs.stdenv.isDarwin then "osxkeychain" else "libsecret";
+      credential.helper = if pkgs.stdenv.hostPlatform.isDarwin then "osxkeychain" else "libsecret";
       init.defaultBranch = "main";
 
       core.pager = "delta";
