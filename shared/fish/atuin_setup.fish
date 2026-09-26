@@ -21,7 +21,7 @@ function fzf_atuin_history_widget
     #     ctrl-r: reload global
     #
     # Note: we escape \"$PWD\" so it expands when fzf executes the reload command.
-    set -l bind_reload "--bind=ctrl-d:reload(atuin search --format '{$ATUIN_FMT}' -c \"$PWD\"),ctrl-r:reload(atuin search --format '{$ATUIN_FMT}')"
+    set -l bind_reload "--bind=ctrl-d:reload(atuin search --format '$ATUIN_FMT' -c \"$PWD\"),ctrl-r:reload(atuin search --format '$ATUIN_FMT')"
 
     set -l fzf_opts \
         --tac \
