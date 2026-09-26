@@ -21,6 +21,7 @@
     delta
     dust
     fd
+    gh
     graphviz
     nerd-fonts.inconsolata
     procs
