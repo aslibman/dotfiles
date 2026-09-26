@@ -1,4 +1,6 @@
-# This module copies nix-initialized VSCode files to make them editable
+# Makes the Nix-generated VSCode settings, keybindings and extensions editable
+# during a session, then resets them to the Nix-defined state on each switch.
+# Also applies to vscode-server (Remote SSH).
 
 { config, pkgs, ... }:
 
