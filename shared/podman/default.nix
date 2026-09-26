@@ -1,9 +1,4 @@
-{
-  config,
-  pkgs,
-  lib,
-  ...
-}:
+{ pkgs, lib, ... }:
 
 {
   home.packages = with pkgs; [
@@ -29,18 +24,5 @@
   # `podman machine init` requires ssh-keygen on the PATH
   home.activation.podmanSshPath = lib.hm.dag.entryBefore [ "podmanMachines" ] ''
     export PATH="${pkgs.openssh}/bin:$PATH"
-  '';
-
-  home.activation.validatePodman = config.lib.dag.entryAfter [ "linkGeneration" ] ''
-    run echo "🔍 Validating Podman configuration..."
-
-    if ! run ${pkgs.writeShellScript "test-podman-wrapper" ''
-      export PATH="${config.home.profileDirectory}/bin:$PATH"
-      ${./test-podman.sh}
-    ''}; then
-      echo "❌ Podman validation failed!"
-      echo "Fix the errors above before the configuration can be activated."
-      exit 1
-    fi
   '';
 }

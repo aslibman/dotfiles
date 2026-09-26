@@ -152,6 +152,14 @@
         }
       );
 
+      checks = forAllSystems (system: {
+        formatting = treefmtEval.${system}.config.build.check self;
+        neovim = import ./shared/neovim/check.nix {
+          pkgs = nixpkgs.legacyPackages.${system};
+          homeConfig = self.homeConfigurations.${system}.config;
+        };
+      });
+
       formatter = forAllSystems (system: treefmtEval.${system}.config.build.wrapper);
 
       devShells = forAllSystems (

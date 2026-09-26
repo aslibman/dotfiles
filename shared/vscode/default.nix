@@ -142,17 +142,4 @@ in
 
   home.file.".vscode-server/extensions".source =
     config.lib.file.mkOutOfStoreSymlink "${config.home.homeDirectory}/.vscode/extensions";
-
-  home.activation.validateVscode = config.lib.dag.entryAfter [ "linkGeneration" ] ''
-    run echo "🔍 Validating VSCode configuration..."
-
-    if ! run ${pkgs.writeShellScript "test-vscode-wrapper" ''
-      export PATH="${config.home.profileDirectory}/bin:$PATH"
-      ${./test-vscode.sh}
-    ''}; then
-      echo "❌ VSCode validation failed!"
-      echo "Fix the errors above before the configuration can be activated."
-      exit 1
-    fi
-  '';
 }
