@@ -110,13 +110,10 @@
       # homeConfigurations reads from the environment — only used by the nix run app
       homeConfigurations = forAllSystems (
         system:
-        let
-          username = getEnvOr "USER" "user";
-        in
         mkHomeConfiguration system {
-          inherit username;
-          homeDirectory = getEnvOr "HOME" ((if isDarwin system then "/Users/" else "/home/") + username);
-          gitEmail = getEnvOr "GIT_EMAIL" "user@example.com";
+          username = getEnvOr "USER" "user";
+          homeDirectory = getEnvOr "HOME" "/homeless-shelter";
+          gitEmail = builtins.getEnv "GIT_EMAIL";
         }
       );
 
