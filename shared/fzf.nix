@@ -14,7 +14,7 @@
     ];
 
     # Preview file content using bat (https://github.com/sharkdp/bat)
-    fileWidgetOptions = [
+    fileWidget.options = [
       "--preview 'bat -n --color=always {}'"
       "--bind 'ctrl-/:change-preview-window(down|hidden|)'"
     ];

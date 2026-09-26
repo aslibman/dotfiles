@@ -4,7 +4,10 @@
 
 let
   vscodeUserPath =
-    if pkgs.stdenv.isDarwin then "Library/Application Support/Code/User" else ".config/Code/User";
+    if pkgs.stdenv.hostPlatform.isDarwin then
+      "Library/Application Support/Code/User"
+    else
+      ".config/Code/User";
   vscodeUserDir = "${config.home.homeDirectory}/${vscodeUserPath}";
 in
 {

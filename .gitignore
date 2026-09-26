@@ -6,3 +6,5 @@ result-*
 .direnv
 
 .vscode
+
+.DS_Store
