@@ -151,9 +151,9 @@
 
       checks = forAllSystems (system: {
         formatting = treefmtEval.${system}.config.build.check self;
-        neovim = import ./shared/neovim/check.nix {
+        home = import ./tests {
           pkgs = nixpkgs.legacyPackages.${system};
-          homeConfig = self.homeConfigurations.${system}.config;
+          mkHomeConfiguration = mkHomeConfiguration system;
         };
       });
 

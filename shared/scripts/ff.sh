@@ -4,7 +4,7 @@
 
 RG_COMMAND="rg -i -l --hidden --no-ignore-vcs"
 
-FZF_DEFAULT_COMMAND="rg --files" fzf \
+rg --files | fzf \
     -m \
     -e \
     --ansi \
