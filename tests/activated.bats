@@ -25,9 +25,18 @@ load helpers
 
 @test "podman machine shares /Users and /var/folders" {
     skip_unless_darwin
-    mounts=$(podman machine inspect dev-machine | jq -r '.[0].Mounts[].Source')
+    # `podman machine inspect` doesn't report mounts; the machine config does
+    mounts=$(jq -r '.Mounts[].Source' "$HOME"/.config/containers/podman/machine/*/dev-machine.json)
     grep -qx /Users <<<"$mounts"
     grep -qx /var/folders <<<"$mounts"
+}
+
+@test "dracula renders the tmux status bar" {
+    # The plugin's scripts use #!/usr/bin/env, which the Linux build sandbox lacks
+    tmux -L bats-activated -f "$HOME/.config/tmux/tmux.conf" new-session -d
+    status=$(tmux -L bats-activated show -gv status-right)
+    tmux -L bats-activated kill-server
+    [[ "$status" == *dracula* ]] || { echo "$status"; return 1; }
 }
 
 @test "podman works" {

@@ -47,9 +47,10 @@ nvim_eval() {
 
 @test "checkhealth reports no errors" {
     nvim --headless +checkhealth +"write! $BATS_TEST_TMPDIR/health.log" +qa 2>/dev/null
-    # curl, tar and the tree-sitter CLI are only needed to install parsers outside Nix
+    # curl, tar and the tree-sitter CLI are only needed to install parsers outside Nix;
+    # infocmp fails when there's no real terminal (CI)
     errors=$(grep -E '^\s*- (❌ )?ERROR' "$BATS_TEST_TMPDIR/health.log" |
-        grep -vE 'tree-sitter-cli not found|curl not found|tar not found' || true)
+        grep -vE 'tree-sitter-cli not found|curl not found|tar not found|"infocmp", "-L"' || true)
     [ -z "$errors" ] || { echo "$errors"; return 1; }
 }
 

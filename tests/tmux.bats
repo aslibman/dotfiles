@@ -29,9 +29,9 @@ t() { tmux -L bats "$@"; }
     done
 }
 
-@test "dracula theme is loaded" {
+@test "dracula theme is configured" {
     [ "$(t show -gv @dracula-plugins)" = "git time" ]
-    [[ "$(t show -gv status-right)" == *dracula* ]]
+    [ "$(t show -gv @dracula-show-powerline)" = "true" ]
 }
 
 @test "new panes run fish" {
