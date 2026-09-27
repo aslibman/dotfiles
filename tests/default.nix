@@ -35,6 +35,7 @@ pkgs.runCommand "home-tests"
   ''
     export HOME=${homeDirectory}
     export USER=$(id -un)
+    ${pkgs.lib.optionalString pkgs.stdenv.hostPlatform.isLinux "export LANG=C.UTF-8 # the Linux sandbox has no locale"}
     rm -rf $HOME && mkdir -p $HOME
     trap 'rm -rf "$HOME"' EXIT
     cp -rs --no-preserve=mode ${homeConfig.home-files}/. $HOME/
