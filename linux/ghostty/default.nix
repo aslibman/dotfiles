@@ -2,7 +2,7 @@
   programs.ghostty = {
     enable = true;
     settings = {
-      font-family = "InconsolataNFM";
+      font-family = "Inconsolata Nerd Font Mono";
       font-size = 16;
       theme = "Dracula";
       scrollback-limit = 1000000;

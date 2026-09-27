@@ -38,7 +38,7 @@ perms:
   special_other: {foreground: "#6272A4"}
   attribute: {foreground: "#F8F8F2"}
 size:
-  major: {foreground: "F1FA8C"}
+  major: {foreground: "#F1FA8C"}
   minor: {foreground: "#BD93F9"}
   number_byte: {foreground: "#F8F8F2"}
   number_kilo: {foreground: "#F8F8F2"}

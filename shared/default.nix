@@ -21,6 +21,7 @@
     delta
     dust
     fd
+    keychain
     gh
     graphviz
     nerd-fonts.inconsolata
@@ -43,14 +44,6 @@
     LESS = "-R";
     # Silence VSCode's "install in WSL" prompt
     DONT_PROMPT_WSL_INSTALL = "No_Prompt_please";
-  };
-
-  programs.keychain = {
-    enable = true;
-    keys = [
-      "id_ed25519"
-      "id_rsa"
-    ];
   };
 
   programs.bash.enable = true;
