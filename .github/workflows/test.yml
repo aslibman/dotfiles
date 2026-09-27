@@ -25,6 +25,7 @@ jobs:
   install:
     runs-on: ${{ matrix.os }}
     strategy:
+      fail-fast: false # report each OS separately
       matrix:
         os: [ubuntu-latest, macos-latest]
     steps:

@@ -44,20 +44,20 @@ pkgs.testers.runNixOSTest {
     ''
       machine.wait_for_unit("home-manager-tester.service")
 
-      def run_tests():
+      def run_suite():
           machine.succeed(
               "su - tester -c 'HM_HOME_FILES=${homeFiles} "
               "bats --print-output-on-failure ${./.}' >&2"
           )
 
       with subtest("bats suite against the activated home"):
-          run_tests()
+          run_suite()
 
       with subtest("re-activation is idempotent and resets edited VS Code settings"):
           settings = "/home/tester/.config/Code/User/settings.json"
           machine.succeed(f"su - tester -c \"jq '.\\\"editor.fontSize\\\" = 99' {settings} > s && mv s {settings}\"")
           machine.succeed("systemctl restart home-manager-tester.service")
           machine.succeed(f"test \"$(jq '.\\\"editor.fontSize\\\"' {settings})\" = 14")
-          run_tests()
+          run_suite()
     '';
 }
