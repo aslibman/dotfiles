@@ -46,7 +46,7 @@ pkgs.testers.runNixOSTest {
 
       def run_suite():
           machine.succeed(
-              "su - tester -c 'HM_HOME_FILES=${homeFiles} "
+              "su - tester -c 'TERM=xterm-256color HM_HOME_FILES=${homeFiles} "
               "bats --print-output-on-failure ${./.}' >&2"
           )
 

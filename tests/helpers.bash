@@ -29,9 +29,13 @@ vscode_user_dir() {
     fi
 }
 
-# Family, full and PostScript names of every font in the home profile.
+# Family, full and PostScript names of every font in the directories home-manager's
+# fontconfig file exposes (what apps actually search).
 installed_font_names() {
-    find -L "$HM_PROFILE/share/fonts" -type f \( -name '*.ttf' -o -name '*.otf' \) \
+    local dirs
+    mapfile -t dirs < <(sed -n 's:.*<dir>\(.*\)</dir>.*:\1:p' "$HOME/.config/fontconfig/conf.d/10-hm-fonts.conf" |
+        while read -r d; do [[ -d $d ]] && echo "$d"; done)
+    find -L "${dirs[@]}" -type f \( -name '*.ttf' -o -name '*.otf' \) \
         -exec fc-scan --format '%{family}\n%{fullname}\n%{postscriptname}\n' {} \; 2>/dev/null |
         tr ',' '\n' | sort -u
 }
