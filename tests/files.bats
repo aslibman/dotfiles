@@ -21,9 +21,11 @@ load helpers
     yq '.' "$HOME/.config/eza/theme.yml" >/dev/null
 }
 
-@test "no generated dotfile is a broken symlink" {
-    broken=$(find "$HOME" -path "$HOME/.nix-profile" -prune -o -xtype l -print)
-    [ -z "$broken" ] || { echo "broken symlinks:"; echo "$broken"; return 1; }
+@test "every managed dotfile exists and resolves" {
+    broken=$(cd "$HM_HOME_FILES" && find . \( -type f -o -type l \) | while read -r f; do
+        [ -e "$HOME/$f" ] || echo "$f"
+    done)
+    [ -z "$broken" ] || { echo "missing or broken:"; echo "$broken"; return 1; }
 }
 
 @test "every installed CLI tool runs" {

@@ -27,7 +27,7 @@ load helpers
 
 @test "the Nix profile comes first in PATH" {
     run fish -c 'echo $PATH[1]'
-    [ "$output" = "$HOME/.nix-profile/bin" ]
+    [ "$output" = "$HM_PROFILE/bin" ]
 }
 
 @test "session variables reach fish" {

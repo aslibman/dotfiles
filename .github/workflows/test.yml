@@ -16,6 +16,12 @@ jobs:
       - uses: DeterminateSystems/magic-nix-cache-action@v15
       - name: Run pre-commit hooks
         run: nix develop -c prek run --all-files --show-diff-on-failure
+      - name: Evaluate every home configuration without warnings
+        run: |
+          for system in aarch64-darwin x86_64-linux aarch64-linux; do
+            nix eval --option abort-on-warn true --raw ".#homeConfigurations.$system.activationPackage.drvPath"
+            echo
+          done
   install:
     runs-on: ${{ matrix.os }}
     strategy:
@@ -32,5 +38,21 @@ jobs:
       - uses: DeterminateSystems/magic-nix-cache-action@v15
       - name: Run flake checks
         run: nix flake check
+      - name: Create a dotfile that the install must back up
+        run: mkdir -p ~/.config/tmux && echo "# pre-existing" > ~/.config/tmux/tmux.conf
       - name: Run install
         run: GIT_EMAIL=ci@example.com nix run .
+      - name: Check the conflicting dotfile was backed up
+        run: grep -qx "# pre-existing" ~/.config/tmux/tmux.conf.backup
+      - name: Put the home profile on PATH
+        run: echo "$HOME/.nix-profile/bin" >> "$GITHUB_PATH"
+      - name: Test the activated home
+        env:
+          GIT_EMAIL: ci@example.com
+        run: nix develop .#tests -c bats --print-output-on-failure tests
+      - name: Switch again after editing a managed file
+        run: |
+          if [ "$RUNNER_OS" = macOS ]; then dir="$HOME/Library/Application Support/Code/User"; else dir="$HOME/.config/Code/User"; fi
+          jq '."editor.fontSize" = 99' "$dir/settings.json" > settings.tmp && mv settings.tmp "$dir/settings.json"
+          GIT_EMAIL=ci@example.com nix run .
+          test "$(jq '."editor.fontSize"' "$dir/settings.json")" = 14
