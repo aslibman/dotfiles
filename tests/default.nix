@@ -1,6 +1,7 @@
 # Runs tests/*.bats against a home configuration built for a scratch home
 # directory, without activating it: $HOME holds the generated dotfiles and
-# PATH is the home profile.
+# ~/.nix-profile is the home profile. Tests tagged `activated` need a real
+# switch and only run in CI after `nix run .` (see .github/workflows/test.yml).
 { pkgs, mkHomeConfiguration }:
 
 let
@@ -28,10 +29,8 @@ let
 in
 pkgs.runCommand "home-tests"
   {
-    nativeBuildInputs = [
-      pkgs.bats
-      pkgs.procps
-    ];
+    nativeBuildInputs = import ./tools.nix pkgs;
+    passthru = { inherit homeConfig; };
   }
   ''
     export HOME=${homeDirectory}
@@ -39,8 +38,9 @@ pkgs.runCommand "home-tests"
     rm -rf $HOME && mkdir -p $HOME
     trap 'rm -rf "$HOME"' EXIT
     cp -rs --no-preserve=mode ${homeConfig.home-files}/. $HOME/
-    export PATH=${homeConfig.home.path}/bin:$PATH
+    ln -s ${homeConfig.home.path} $HOME/.nix-profile
+    export PATH=$HOME/.nix-profile/bin:$PATH
 
-    bats --print-output-on-failure ${./.}
+    bats --print-output-on-failure --filter-tags '!activated' ${./.}
     touch $out
   ''
