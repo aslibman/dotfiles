@@ -42,6 +42,11 @@ pkgs.runCommand "home-tests"
     export PATH=$HOME/.nix-profile/bin:$PATH
     export HM_HOME_FILES=${homeConfig.home-files}
 
-    bats --print-output-on-failure --filter-tags '!activated' ${./.}
+    # Nix only shows the last lines of a failed build, so repeat the failures at the end
+    bats --print-output-on-failure --filter-tags '!activated' ${./.} | tee $TMPDIR/bats.log || {
+      echo "=== failed tests ==="
+      awk '/^not ok/ { p = 1 } /^ok / { p = 0 } p' $TMPDIR/bats.log
+      exit 1
+    }
     touch $out
   ''

@@ -38,7 +38,7 @@ jobs:
       - uses: DeterminateSystems/nix-installer-action@v23
       - uses: DeterminateSystems/magic-nix-cache-action@v15
       - name: Run flake checks
-        run: nix flake check
+        run: nix flake check --print-build-logs --keep-going
       - name: Create a dotfile that the install must back up
         run: mkdir -p ~/.config/tmux && echo "# pre-existing" > ~/.config/tmux/tmux.conf
       - name: Run install
