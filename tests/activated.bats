@@ -41,5 +41,10 @@ load helpers
 
 @test "podman works" {
     skip_unless_linux
+    # Ubuntu 24.04+ blocks unprivileged user namespaces for binaries without an
+    # AppArmor profile, which includes Nix's podman (Ubuntu's own podman has one)
+    if [[ $(cat /proc/sys/kernel/apparmor_restrict_unprivileged_userns 2>/dev/null) == 1 ]]; then
+        skip "AppArmor restricts unprivileged user namespaces; rootless Nix podman needs a profile"
+    fi
     podman info --format '{{.Host.Arch}}'
 }
