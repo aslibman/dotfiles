@@ -40,6 +40,7 @@ pkgs.runCommand "home-tests"
     cp -rs --no-preserve=mode ${homeConfig.home-files}/. $HOME/
     ln -s ${homeConfig.home.path} $HOME/.nix-profile
     export PATH=$HOME/.nix-profile/bin:$PATH
+    export HM_HOME_FILES=${homeConfig.home-files}
 
     bats --print-output-on-failure --filter-tags '!activated' ${./.}
     touch $out

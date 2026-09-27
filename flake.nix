@@ -149,13 +149,31 @@
         }
       );
 
-      checks = forAllSystems (system: {
-        formatting = treefmtEval.${system}.config.build.check self;
-        home = import ./tests {
+      checks = forAllSystems (
+        system:
+        let
           pkgs = nixpkgs.legacyPackages.${system};
-          mkHomeConfiguration = mkHomeConfiguration system;
-        };
-      });
+          home = import ./tests {
+            inherit pkgs;
+            mkHomeConfiguration = mkHomeConfiguration system;
+          };
+          inherit (home.homeConfig) warnings;
+        in
+        {
+          formatting = treefmtEval.${system}.config.build.check self;
+          inherit home;
+          # Renamed/deprecated options only print a trace, so fail on them here
+          home-manager-warnings = lib.throwIf (
+            warnings != [ ]
+          ) "home-manager warnings:\n${lib.concatLines warnings}" (pkgs.writeText "no-warnings" "");
+        }
+        // lib.optionalAttrs (!isDarwin system) {
+          vm = import ./tests/vm.nix {
+            inherit pkgs home-manager;
+            homeModule = self.nixosModules.home;
+          };
+        }
+      );
 
       formatter = forAllSystems (system: treefmtEval.${system}.config.build.wrapper);
 
@@ -176,6 +194,9 @@
               prek install
             '';
           };
+
+          # Tools for running tests/*.bats against an activated home (see test.yml)
+          tests = pkgs.mkShellNoCC { packages = import ./tests/tools.nix pkgs; };
         }
       );
     };

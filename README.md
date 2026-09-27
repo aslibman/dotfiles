@@ -16,16 +16,25 @@ To update, just run the install command again.
 
 ## Testing
 
-`tests/*.bats` are [bats](https://bats-core.readthedocs.io/) tests that run against the built
-home configuration (with a scratch `$HOME`), so nothing is activated on your machine.
+`tests/*.bats` are [bats](https://bats-core.readthedocs.io/) tests for the configuration. They run in
+three places:
+
+- **`checks.<system>.home`**: against the built configuration in a scratch `$HOME`, without
+  activating anything. `nix flake check` runs this, along with formatting and a check that
+  home-manager reports no warnings.
+- **CI, after a real `nix run .`** on macOS and Linux: the whole suite, including tests tagged
+  `activated` (see `tests/activated.bats`), plus backup, re-switch and no-warnings checks.
+- **`checks.<linux>.vm`**: a NixOS VM that uses `nixosModules.home` for a real user, runs the
+  suite, then re-activates. Needs a Linux machine or builder with KVM.
 
 ```bash
-nix flake check                                     # all checks, as CI runs them
+nix flake check                                     # everything for this machine
 nix build -L .#checks.aarch64-darwin.home           # just the tests, with output
 ```
 
-To add a test, add an `@test` to a `.bats` file in `tests/`. Your packages are on `PATH` and
-`$HOME` contains the generated dotfiles.
+To add a test, add an `@test` to a `.bats` file in `tests/` (`load helpers` for the shared
+helpers). Tests that need a real switch go in `activated.bats`. Don't run the suite directly
+against your own home: some tests write state there (e.g. `direnv allow`).
 
 ## Resources
 

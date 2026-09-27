@@ -19,7 +19,7 @@ known_git_keys_regex() {
 
 @test "identity and credential helper" {
     [ "$(git config user.name)" = "Alex Libman" ]
-    [ "$(git config user.email)" = "tester@example.com" ]
+    [ "$(git config user.email)" = "${GIT_EMAIL:-tester@example.com}" ]
     if is_darwin; then
         [ "$(git config credential.helper)" = "osxkeychain" ]
     else

@@ -14,9 +14,9 @@ setup() {
 }
 
 @test "Nix apps are visible to the desktop" {
-    grep -q "$HOME/.nix-profile/share" "$HOME/.config/environment.d/10-home-manager.conf"
-    [ -f "$HOME/.nix-profile/share/applications/com.mitchellh.ghostty.desktop" ]
-    [ -f "$HOME/.nix-profile/share/applications/code.desktop" ]
+    grep -q "$HM_PROFILE/share" "$HOME/.config/environment.d/10-home-manager.conf"
+    [ -f "$HM_PROFILE/share/applications/com.mitchellh.ghostty.desktop" ]
+    [ -f "$HM_PROFILE/share/applications/code.desktop" ]
 }
 
 @test "ghostty is the default terminal" {
