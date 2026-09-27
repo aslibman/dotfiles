@@ -35,3 +35,12 @@ setup() {
     wait "$pid" || code=$?
     [ "$code" -eq 143 ] # 128 + SIGTERM
 }
+
+@test "fkill with no selection kills nothing" {
+    sleep 29.7353 &
+    pid=$!
+    FZF_DEFAULT_OPTS="--exact --filter='no-such-process-zzz'" run fkill
+    [ "$status" -ne 0 ]
+    kill -0 "$pid"
+    kill "$pid"
+}
