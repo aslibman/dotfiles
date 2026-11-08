@@ -187,6 +187,7 @@
             packages = [
               treefmtEval.${system}.config.build.wrapper
               pkgs.codespell
+              pkgs.gitleaks
               pkgs.prek
               pkgs.shellcheck
             ];
