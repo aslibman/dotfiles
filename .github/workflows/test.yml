@@ -1,12 +1,6 @@
 name: Test dotfiles installation
 on:
   push:
-  workflow_call:
-    inputs:
-      flake-lock-artifact:
-        description: Uploaded flake.lock artifact to test instead of the committed one
-        type: string
-        default: ""
 jobs:
   lint:
     runs-on: ubuntu-latest
@@ -34,11 +28,6 @@ jobs:
         os: [ubuntu-latest, macos-latest]
     steps:
       - uses: actions/checkout@v7
-      - name: Use updated flake.lock
-        if: inputs.flake-lock-artifact != ''
-        uses: actions/download-artifact@v8
-        with:
-          name: ${{ inputs.flake-lock-artifact }}
       - uses: DeterminateSystems/nix-installer-action@v23
       - uses: DeterminateSystems/magic-nix-cache-action@v15
       - name: Run flake checks
