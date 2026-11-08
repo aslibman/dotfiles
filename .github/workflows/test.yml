@@ -12,10 +12,14 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v7
+        with:
+          fetch-depth: 0 # gitleaks scans the full history
       - uses: DeterminateSystems/nix-installer-action@v23
       - uses: DeterminateSystems/magic-nix-cache-action@v15
       - name: Run pre-commit hooks
         run: nix develop -c prek run --all-files --show-diff-on-failure
+      - name: Scan the git history for secrets
+        run: nix develop -c gitleaks git --redact --no-banner --verbose
       - name: Evaluate every home configuration without warnings
         run: |
           for system in aarch64-darwin x86_64-linux aarch64-linux; do
